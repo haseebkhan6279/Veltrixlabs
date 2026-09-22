@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="veltrix-v" x1="16" y1="12" x2="48" y2="12" gradientUnits="userSpaceOnUse">
+      <stop offset="0.5" stop-color="#22D3EE"/>
+      <stop offset="0.5" stop-color="#A855F7"/>
+    </linearGradient>
+  </defs>
+  <path d="M16 12 L32 46 L48 12" stroke="url(#veltrix-v)" stroke-width="10" stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="12"/>
+</svg>
