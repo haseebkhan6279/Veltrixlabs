@@ -228,7 +228,9 @@ function ProjectCard({
             <h3 className="text-xl font-semibold text-zinc-50 md:text-2xl">
               {project.name}
             </h3>
-            <p className="mt-1 text-sm text-cyan-electric/90">{project.tagline}</p>
+            <p className="mt-1 text-sm font-semibold leading-snug text-cyan-electric/95">
+              {project.outcome ?? project.tagline}
+            </p>
           </div>
           {primaryHref ? (
             <a

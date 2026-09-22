@@ -7,6 +7,7 @@ import { ArrowUpRight, Check, ChevronDown, CircleCheck, Mail } from "lucide-reac
 import { IMAGES } from "@/lib/constants";
 import { CONTACT_PROJECT_TYPES } from "@/lib/contact-types";
 import { SITE_EMAIL } from "@/lib/seo";
+import { TEAM } from "@/lib/team";
 
 const fieldClass =
   "w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-zinc-50 outline-none transition focus:border-cyan-electric/60";
@@ -83,6 +84,7 @@ export default function Contact() {
                 <Mail className="h-4 w-4" />
                 {SITE_EMAIL}
               </a>
+              <FounderDirect />
             </div>
 
             <div
@@ -157,6 +159,52 @@ export default function Contact() {
         </div>
       </div>
     </section>
+  );
+}
+
+function FounderDirect() {
+  const founder = TEAM[0];
+  const coFounder = TEAM[1];
+
+  return (
+    <div className="mt-8 rounded-2xl border border-white/10 bg-black/35 p-4">
+      <div className="flex items-center gap-3">
+        <Image
+          src="/team/haseeb.jpg"
+          alt={founder.name}
+          width={48}
+          height={48}
+          className="h-12 w-12 rounded-full object-cover"
+        />
+        <div>
+          <p className="text-sm font-semibold text-zinc-50">{founder.name}</p>
+          <p className="text-[11px] text-zinc-500">
+            {founder.role} · with {coFounder.name}
+          </p>
+        </div>
+      </div>
+      <p className="mt-3 text-sm leading-relaxed text-zinc-400">
+        Engineered by Haseeb Khan &amp; the Veltrix Labs engineering team.
+        Direct line for technical discovery:
+      </p>
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <a
+          href={`mailto:${SITE_EMAIL}`}
+          className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[12px] text-zinc-200 hover:text-cyan-electric"
+        >
+          <Mail className="h-3.5 w-3.5" />
+          {SITE_EMAIL}
+        </a>
+        <a
+          href={founder.linkedIn}
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[12px] text-zinc-200 hover:text-cyan-electric"
+        >
+          LinkedIn
+        </a>
+      </div>
+    </div>
   );
 }
 

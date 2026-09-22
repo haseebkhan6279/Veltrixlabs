@@ -92,6 +92,8 @@ export default function Hero() {
               </a>
             </Magnetic>
           </motion.div>
+
+          <ProofBar />
         </div>
 
         <HeroSculpture />
@@ -219,6 +221,85 @@ function HeroSculpture() {
         </div>
       </div>
     </div>
+  );
+}
+
+function ProofBar() {
+  const velay = PROJECTS.find((project) => project.slug === "vellay");
+  const marks = [
+    "Velay",
+    "Buy4Low",
+    "GT Estate",
+    "OSTELLO",
+    "Zallo.ai",
+    "Atlantic Devices",
+    "Southampton Port Taxi",
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 1, duration: 0.65, ease }}
+      className="mt-10"
+    >
+      <p className="text-[11px] uppercase tracking-[0.22em] text-zinc-500">
+        Shipped in production
+      </p>
+      <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
+        {marks.map((name) => (
+          <span
+            key={name}
+            className="text-[13px] font-semibold tracking-wide text-zinc-500 transition hover:text-zinc-200"
+          >
+            {name}
+          </span>
+        ))}
+      </div>
+      <div className="mt-4 flex flex-wrap items-center gap-2">
+        {velay?.appStoreUrl ? (
+          <a
+            href={velay.appStoreUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-medium text-zinc-300 transition hover:border-white/20 hover:text-zinc-50"
+          >
+            <AppleMark />
+            App Store
+          </a>
+        ) : null}
+        {velay?.playStoreUrl ? (
+          <a
+            href={velay.playStoreUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] font-medium text-zinc-300 transition hover:border-white/20 hover:text-zinc-50"
+          >
+            <PlayMark />
+            Google Play
+          </a>
+        ) : null}
+        <span className="text-[11px] text-zinc-500">
+          Apps published on the Apple App Store &amp; Google Play
+        </span>
+      </div>
+    </motion.div>
+  );
+}
+
+function AppleMark() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current" aria-hidden>
+      <path d="M16.7 12.6c0-2.4 2-3.3 2.1-3.4-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.6.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-3.9 2.5-1.7 2.9-.4 7.2 1.2 9.6.8 1.1 1.7 2.4 3 2.4 1.2 0 1.6-.8 3.1-.8s1.8.8 3.2.8c1.3 0 2.1-1.1 2.9-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.6-3.8ZM14.9 6.3c.7-.8 1.1-1.9 1-3-1 .1-2.1.7-2.8 1.5-.6.7-1.2 1.9-1 3 1.1.1 2.1-.5 2.8-1.5Z" />
+    </svg>
+  );
+}
+
+function PlayMark() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current" aria-hidden>
+      <path d="M4.5 3.6v16.8c0 .7.8 1.1 1.4.7l14-8.4c.6-.4.6-1.3 0-1.7l-14-8.4c-.6-.4-1.4 0-1.4.7Z" />
+    </svg>
   );
 }
 

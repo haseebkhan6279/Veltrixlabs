@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
+import AiWorkflow from "@/components/AiWorkflow";
 import CaseStudies from "@/components/CaseStudies";
+import Reviews from "@/components/Reviews";
 import About from "@/components/About";
 import TechStack from "@/components/TechStack";
 import Process from "@/components/Process";
@@ -35,7 +37,9 @@ export default function Home() {
       <Navbar />
       <Hero />
       <Services />
+      <AiWorkflow />
       <CaseStudies />
+      <Reviews />
       <About />
       <TechStack />
       <Process />

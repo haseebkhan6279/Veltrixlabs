@@ -12,6 +12,7 @@ export type Project = {
   name: string;
   tagline: string;
   description: string;
+  outcome?: string;
   category: ProjectCategory;
   categories?: ProjectCategory[];
   status: "Live" | "In development" | "Client delivery";
@@ -25,7 +26,62 @@ export type Project = {
   featured?: boolean;
 };
 
-export const PROJECTS: Project[] = [
+const PINNED_SLUGS = ["vellay", "ostello", "zallo"] as const;
+
+const PROJECT_OUTCOMES: Record<string, string> = {
+  vellay:
+    "Handles live booking operations for top sports complexes across Pakistan.",
+  ostello:
+    "Streamlined 12 operational modules across resident onboarding, billing, and security.",
+  zallo:
+    "Low-latency voice AI recovering missed inbound calls and booking appointments 24/7.",
+  buy4low:
+    "Automated SEO engine generating 3,200+ location-targeted landing pages.",
+  "gt-estate":
+    "Live property ops: inquiries, PM loan applications, and an admin console in production.",
+  "vellay-app":
+    "Player-facing court booking for futsal, cricket, padel, and table tennis.",
+  "southampton-port-taxi":
+    "Cruise-port transfers with a locked fare before the traveller leaves home.",
+  "court-chuno":
+    "Live court reservations and player chat on a Firebase mobile stack.",
+  degn: "Wallet-connected Solana trading with Jupiter swaps and live price charts.",
+  "atlantic-devices":
+    "UK phone marketplace plus wholesale IMEI inventory and dual-currency invoicing.",
+  manpowerhub:
+    "One approved timesheet drives payroll and invoicing across isolated tenants.",
+  hostelos: "Hostel SaaS marketing site with a live bed-map product demo.",
+  voxdesk: "White-label AI receptionist site with a live brand switcher.",
+  "aureon-lims":
+    "Compliance-aware marketing site for an enterprise lab information system.",
+  "auto-trading-bot":
+    "Discord signals executed on Binance with risk controls and a live dashboard.",
+  hajar: "Couture storefront with collections, products, and Cloudinary media ops.",
+  reworrked: "Dark editorial DTC storefront for a premium cap brand.",
+  "s-oil": "Brand site plus NestJS/Mongo CMS for products and editorial.",
+  splendid: "Searchable engine-seal catalogue built for the Pakistani market.",
+  dongsung: "Corporate lab site covering capabilities, research, and process.",
+  "flex-fuel":
+    "Gym platform unifying workouts with an AI nutrition and training assistant.",
+  "shes-trends": "Fashion storefront with conversion-focused product pages.",
+  "juice-company": "Brand site and product presentation for a beverage line.",
+  "paper-company":
+    "Manufacturer site with product lines and inquiry capture.",
+  "accounting-system":
+    "Finance dashboard for invoices, expenses, and reporting.",
+  "crm-system": "Pipeline tracking, contacts, and operational follow-ups.",
+  "erp-saas": "Modular ERP surfaces for inventory, finance, and daily ops.",
+  "hrm-system": "People records, attendance, and organisational workflows.",
+  "inventory-management":
+    "SKU, stock movement, and warehouse visibility in one console.",
+  "mern-cms": "Articles, media, roles, and publishing workflows on MERN.",
+  "table-tennis-backend":
+    "Match flow, courts, and real-time coordination API.",
+  "real-estate-ops":
+    "Listings, leads, and property administration in one dashboard.",
+};
+
+const PROJECT_LIST: Project[] = [
   {
     slug: "gt-estate",
     name: "GT Estate",
@@ -431,6 +487,19 @@ export const PROJECTS: Project[] = [
     stack: ["Next.js", "Node.js"],
   },
 ];
+
+export const PROJECTS: Project[] = [
+  ...PINNED_SLUGS.flatMap((slug) =>
+    PROJECT_LIST.filter((project) => project.slug === slug),
+  ),
+  ...PROJECT_LIST.filter(
+    (project) =>
+      !PINNED_SLUGS.includes(project.slug as (typeof PINNED_SLUGS)[number]),
+  ),
+].map((project) => ({
+  ...project,
+  outcome: PROJECT_OUTCOMES[project.slug] ?? project.tagline,
+}));
 
 export const FEATURED_PROJECTS = PROJECTS.filter((p) => p.featured);
 

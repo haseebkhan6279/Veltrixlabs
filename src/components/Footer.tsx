@@ -78,6 +78,16 @@ export default function Footer() {
               {SITE_TAGLINE} Founder-led product studio in {SITE_LOCATION} —
               shipping for the US, UK, and globally.
             </p>
+            <p className="mt-4 text-sm leading-relaxed text-zinc-400">
+              Engineered by {founder.name} &amp; the {SITE_NAME} engineering
+              team. Direct line for technical discovery:{" "}
+              <a
+                href={`mailto:${SITE_EMAIL}`}
+                className="text-zinc-200 underline-offset-4 hover:text-cyan-electric hover:underline"
+              >
+                {SITE_EMAIL}
+              </a>
+            </p>
             <a
               href="/#contact"
               className="glow-btn mt-7 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-obsidian"

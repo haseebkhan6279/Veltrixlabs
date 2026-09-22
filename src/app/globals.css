@@ -172,6 +172,33 @@ body {
   animation-play-state: paused;
 }
 
+.reviews-ticker {
+  animation: marquee 28s linear infinite;
+}
+
+.reviews-swiper .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+}
+
+.reviews-swiper .swiper-slide {
+  transition: filter 0.45s ease, opacity 0.45s ease;
+  filter: saturate(0.7);
+  opacity: 0.55;
+}
+
+.reviews-swiper .swiper-slide-active {
+  filter: none;
+  opacity: 1;
+}
+
+.reviews-swiper .swiper-slide-active .review-card {
+  border-color: rgba(34, 211, 238, 0.4);
+  box-shadow:
+    0 0 0 1px rgba(168, 85, 247, 0.18),
+    0 24px 60px rgba(34, 211, 238, 0.16);
+}
+
 .swiper-pagination-bullet {
   background: #71717a !important;
   opacity: 1 !important;
@@ -247,7 +274,8 @@ a {
   .animate-float,
   .animate-float-delayed,
   .animate-pulse-glow,
-  .tech-track {
+  .tech-track,
+  .reviews-ticker {
     animation: none !important;
   }
 }
