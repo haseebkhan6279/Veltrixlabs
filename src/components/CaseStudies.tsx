@@ -13,7 +13,7 @@ import {
   type ProjectCategory,
 } from "@/lib/projects";
 
-const PREVIEW_COUNT = 6;
+const PREVIEW_COUNT = 9;
 
 const FILTER_LABEL: Record<(typeof PROJECT_FILTERS)[number], string> = {
   All: "All",
@@ -28,7 +28,7 @@ const FILTER_LABEL: Record<(typeof PROJECT_FILTERS)[number], string> = {
 
 export default function CaseStudies() {
   const [filter, setFilter] = useState<(typeof PROJECT_FILTERS)[number]>("All");
-  const [expanded, setExpanded] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(PREVIEW_COUNT);
 
   const visible = useMemo(
     () =>
@@ -41,22 +41,11 @@ export default function CaseStudies() {
   );
 
   useEffect(() => {
-    setExpanded(false);
+    setVisibleCount(PREVIEW_COUNT);
   }, [filter]);
 
-  const [desktop, setDesktop] = useState(false);
-
-  useEffect(() => {
-    const media = window.matchMedia("(min-width: 768px)");
-    const sync = () => setDesktop(media.matches);
-    sync();
-    media.addEventListener("change", sync);
-    return () => media.removeEventListener("change", sync);
-  }, []);
-
-  const previewCount = desktop ? visible.length : PREVIEW_COUNT;
-  const shown = expanded ? visible : visible.slice(0, previewCount);
-  const showLoadMore = !desktop && visible.length > PREVIEW_COUNT && !expanded;
+  const shown = visible.slice(0, visibleCount);
+  const showLoadMore = visible.length > visibleCount;
 
   useEffect(() => {
     let cancelled = false;
@@ -134,8 +123,8 @@ export default function CaseStudies() {
           <div className="mt-10 flex justify-center">
             <button
               type="button"
-              aria-expanded={expanded}
-              onClick={() => setExpanded(true)}
+              aria-expanded={!showLoadMore}
+              onClick={() => setVisibleCount((count) => count + PREVIEW_COUNT)}
               className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 py-2 pl-6 pr-2 text-sm font-semibold text-zinc-100 transition hover:border-cyan-electric/40 hover:bg-white/10"
             >
               Load more projects

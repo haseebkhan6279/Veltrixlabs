@@ -1,32 +1,33 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { ArrowUpRight, CircleCheck, Mail } from "lucide-react";
+import { ArrowUpRight, Check, ChevronDown, CircleCheck, Mail } from "lucide-react";
 import { IMAGES } from "@/lib/constants";
+import { CONTACT_PROJECT_TYPES } from "@/lib/contact-types";
 import { SITE_EMAIL } from "@/lib/seo";
 
-const projectTypes = [
-  "Web App",
-  "SaaS",
-  "Shopify",
-  "AI Automation",
-  "Mobile App",
-];
+const fieldClass =
+  "w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-zinc-50 outline-none transition focus:border-cyan-electric/60";
 
 export default function Contact() {
   const [parent] = useAutoAnimate({ duration: 380 });
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
+  const [projectType, setProjectType] = useState("");
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
-    setSending(true);
+    if (!projectType) {
+      setError("Select a project type.");
+      return;
+    }
     setError("");
+    setSending(true);
 
     try {
       const res = await fetch("/api/contact", {
@@ -35,12 +36,13 @@ export default function Contact() {
         body: JSON.stringify({
           name: data.get("name"),
           email: data.get("email"),
-          type: data.get("type"),
+          type: projectType,
           message: data.get("message"),
         }),
       });
       if (!res.ok) throw new Error("Could not send brief");
       form.reset();
+      setProjectType("");
       setSubmitted(true);
     } catch {
       setError("Could not send the brief. Try again or email us directly.");
@@ -113,7 +115,7 @@ export default function Contact() {
                       required
                       name="name"
                       placeholder="Alex Rivera"
-                      className="rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-zinc-50 outline-none transition focus:border-cyan-electric/60"
+                      className={fieldClass}
                     />
                   </label>
                   <label className="grid gap-2 text-sm text-zinc-300">
@@ -123,27 +125,10 @@ export default function Contact() {
                       type="email"
                       name="email"
                       placeholder="alex@company.com"
-                      className="rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-zinc-50 outline-none transition focus:border-cyan-electric/60"
+                      className={fieldClass}
                     />
                   </label>
-                  <label className="grid gap-2 text-sm text-zinc-300">
-                    Project Type
-                    <select
-                      required
-                      name="type"
-                      defaultValue=""
-                      className="rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-zinc-50 outline-none transition focus:border-cyan-electric/60"
-                    >
-                      <option value="" disabled>
-                        Select type
-                      </option>
-                      {projectTypes.map((type) => (
-                        <option key={type} value={type}>
-                          {type}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
+                  <ProjectTypeSelect value={projectType} onChange={setProjectType} />
                   <label className="grid gap-2 text-sm text-zinc-300">
                     Message
                     <textarea
@@ -151,7 +136,7 @@ export default function Contact() {
                       name="message"
                       rows={4}
                       placeholder="What are we building, and by when?"
-                      className="resize-none rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-zinc-50 outline-none transition focus:border-cyan-electric/60"
+                      className={`resize-none ${fieldClass}`}
                     />
                   </label>
                   {error ? (
@@ -172,5 +157,86 @@ export default function Contact() {
         </div>
       </div>
     </section>
+  );
+}
+
+function ProjectTypeSelect({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const close = (event: MouseEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", close);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", close);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div ref={rootRef} className="grid gap-2 text-sm text-zinc-300">
+      <span>Project Type</span>
+      <div className="relative">
+        <button
+          type="button"
+          aria-haspopup="listbox"
+          aria-expanded={open}
+          aria-label="Project type"
+          onClick={() => setOpen((current) => !current)}
+          className={`${fieldClass} flex items-center justify-between gap-3 text-left ${
+            value ? "text-zinc-50" : "text-zinc-500"
+          }`}
+        >
+          {value || "Select a project type"}
+          <ChevronDown
+            className={`h-4 w-4 shrink-0 text-zinc-400 transition ${open ? "rotate-180" : ""}`}
+          />
+        </button>
+        {open ? (
+          <ul
+            role="listbox"
+            className="absolute inset-x-0 top-[calc(100%+8px)] z-30 max-h-64 overflow-auto rounded-xl border border-white/10 bg-[#18181b] p-1 shadow-[0_18px_50px_rgba(0,0,0,0.45)]"
+          >
+            {CONTACT_PROJECT_TYPES.map((type) => {
+              const selected = type === value;
+              return (
+                <li key={type}>
+                  <button
+                    type="button"
+                    role="option"
+                    aria-selected={selected}
+                    onClick={() => {
+                      onChange(type);
+                      setOpen(false);
+                    }}
+                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition ${
+                      selected
+                        ? "bg-white/10 text-cyan-electric"
+                        : "text-zinc-100 hover:bg-white/10"
+                    }`}
+                  >
+                    {type}
+                    {selected ? <Check className="h-4 w-4" /> : null}
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        ) : null}
+      </div>
+    </div>
   );
 }

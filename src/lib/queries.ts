@@ -1,5 +1,9 @@
 import { promises as fs } from "fs";
 import path from "path";
+import {
+  CONTACT_PROJECT_TYPES,
+  type ContactProjectType,
+} from "@/lib/contact-types";
 
 export type ContactQuery = {
   id: string;
@@ -12,16 +16,6 @@ export type ContactQuery = {
 
 const FILE = path.join(process.cwd(), "data", "queries.json");
 const MAX_QUERIES = 2000;
-
-const PROJECT_TYPES = [
-  "Web App",
-  "SaaS",
-  "Shopify",
-  "AI Automation",
-  "Mobile App",
-] as const;
-
-export const CONTACT_PROJECT_TYPES = PROJECT_TYPES;
 
 function clip(value: unknown, max: number) {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
@@ -37,7 +31,7 @@ export function parseContactQuery(body: unknown): Omit<ContactQuery, "id" | "t">
 
   if (!name || !email || !type || !message) return null;
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return null;
-  if (!PROJECT_TYPES.includes(type as (typeof PROJECT_TYPES)[number])) return null;
+  if (!CONTACT_PROJECT_TYPES.includes(type as ContactProjectType)) return null;
 
   return { name, email, type, message };
 }
