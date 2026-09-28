@@ -1,5 +1,4 @@
-import { promises as fs } from "fs";
-import path from "path";
+import { loadList, persistenceMode, pushItem } from "@/lib/json-store";
 
 export type AnalyticsEvent = {
   t: number;
@@ -9,33 +8,16 @@ export type AnalyticsEvent = {
   session: string;
 };
 
-const FILE = path.join(process.cwd(), "data", "analytics.json");
+const FILE = "analytics.json";
+const KEY = "veltrix:analytics";
 const MAX_EVENTS = 8000;
 
-async function readEvents(): Promise<AnalyticsEvent[]> {
-  try {
-    const raw = await fs.readFile(FILE, "utf8");
-    const parsed = JSON.parse(raw) as AnalyticsEvent[];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-async function writeEvents(events: AnalyticsEvent[]) {
-  await fs.mkdir(path.dirname(FILE), { recursive: true });
-  await fs.writeFile(FILE, JSON.stringify(events), "utf8");
-}
-
 export async function recordEvent(event: AnalyticsEvent) {
-  const events = await readEvents();
-  events.push(event);
-  const trimmed = events.length > MAX_EVENTS ? events.slice(-MAX_EVENTS) : events;
-  await writeEvents(trimmed);
+  await pushItem(KEY, FILE, event, MAX_EVENTS);
 }
 
 export async function getAnalyticsSummary() {
-  const events = await readEvents();
+  const events = await loadList<AnalyticsEvent>(KEY, FILE);
   const now = Date.now();
   const day = 86_400_000;
   const todayStart = new Date();
@@ -59,7 +41,10 @@ export async function getAnalyticsSummary() {
     start.setDate(start.getDate() - (13 - i));
     const end = start.getTime() + day;
     return {
-      label: start.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+      label: start.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      }),
       count: events.filter((e) => e.t >= start.getTime() && e.t < end).length,
     };
   });
@@ -77,6 +62,7 @@ export async function getAnalyticsSummary() {
   const recent = [...events].slice(-12).reverse();
 
   return {
+    persist: persistenceMode(),
     total: events.length,
     today,
     last7,
@@ -87,3 +73,5 @@ export async function getAnalyticsSummary() {
     recent,
   };
 }
+
+export { persistenceMode };

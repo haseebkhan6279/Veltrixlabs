@@ -1,9 +1,8 @@
-import { promises as fs } from "fs";
-import path from "path";
 import {
   CONTACT_PROJECT_TYPES,
   type ContactProjectType,
 } from "@/lib/contact-types";
+import { loadList, persistenceMode, pushItem } from "@/lib/json-store";
 
 export type ContactQuery = {
   id: string;
@@ -14,14 +13,17 @@ export type ContactQuery = {
   message: string;
 };
 
-const FILE = path.join(process.cwd(), "data", "queries.json");
+const FILE = "queries.json";
+const KEY = "veltrix:queries";
 const MAX_QUERIES = 2000;
 
 function clip(value: unknown, max: number) {
   return typeof value === "string" ? value.trim().slice(0, max) : "";
 }
 
-export function parseContactQuery(body: unknown): Omit<ContactQuery, "id" | "t"> | null {
+export function parseContactQuery(
+  body: unknown,
+): Omit<ContactQuery, "id" | "t"> | null {
   if (!body || typeof body !== "object") return null;
   const input = body as Record<string, unknown>;
   const name = clip(input.name, 80);
@@ -36,35 +38,19 @@ export function parseContactQuery(body: unknown): Omit<ContactQuery, "id" | "t">
   return { name, email, type, message };
 }
 
-async function readQueries(): Promise<ContactQuery[]> {
-  try {
-    const raw = await fs.readFile(FILE, "utf8");
-    const parsed = JSON.parse(raw) as ContactQuery[];
-    return Array.isArray(parsed) ? parsed : [];
-  } catch {
-    return [];
-  }
-}
-
-async function writeQueries(queries: ContactQuery[]) {
-  await fs.mkdir(path.dirname(FILE), { recursive: true });
-  await fs.writeFile(FILE, JSON.stringify(queries, null, 2), "utf8");
-}
-
 export async function recordQuery(input: Omit<ContactQuery, "id" | "t">) {
-  const queries = await readQueries();
   const query: ContactQuery = {
     id: crypto.randomUUID(),
     t: Date.now(),
     ...input,
   };
-  queries.push(query);
-  const trimmed = queries.length > MAX_QUERIES ? queries.slice(-MAX_QUERIES) : queries;
-  await writeQueries(trimmed);
+  await pushItem(KEY, FILE, query, MAX_QUERIES);
   return query;
 }
 
 export async function listQueries() {
-  const queries = await readQueries();
+  const queries = await loadList<ContactQuery>(KEY, FILE);
   return [...queries].reverse();
 }
+
+export { persistenceMode };

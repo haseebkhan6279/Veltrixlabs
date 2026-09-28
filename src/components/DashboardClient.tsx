@@ -4,6 +4,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Mail } from "lucide-react";
 
 type Summary = {
+  persist?: "redis" | "file" | "ephemeral";
   total: number;
   today: number;
   last7: number;
@@ -81,10 +82,7 @@ export default function DashboardClient() {
             Traffic dashboard
           </h1>
           <p className="mt-2 text-sm text-zinc-400">
-            Live on this server. Open{" "}
-            <span className="font-mono text-cyan-electric">
-              localhost:3000/dashboard
-            </span>
+            Internal traffic and contact briefs from the live site.
           </p>
         </div>
         <a
@@ -94,6 +92,14 @@ export default function DashboardClient() {
           Back to site
         </a>
       </div>
+
+      {data.persist === "ephemeral" ? (
+        <p className="mb-6 rounded-2xl border border-amber-400/30 bg-amber-400/10 px-4 py-3 text-sm text-amber-100">
+          Production cannot save files on Vercel. In the Vercel project go to
+          Storage → Create KV → connect this project, then Redeploy. After that,
+          queries and views persist.
+        </p>
+      ) : null}
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Kpi label="Views today" value={data.today} />
