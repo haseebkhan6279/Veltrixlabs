@@ -76,6 +76,7 @@ export default function Hero() {
             <Magnetic className="w-full sm:w-auto">
               <a
                 href="#contact"
+                data-track="Hero start project"
                 className="glow-btn inline-flex w-full items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-obsidian sm:w-auto"
               >
                 Start Your Project
@@ -85,6 +86,7 @@ export default function Hero() {
             <Magnetic strength={0.2} className="w-full sm:w-auto">
               <a
                 href="#work"
+                data-track="Hero view work"
                 className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/12 bg-white/5 px-6 py-3.5 text-sm font-semibold text-zinc-100 backdrop-blur transition hover:border-cyan-electric/40 hover:bg-white/10 sm:w-auto"
               >
                 <Play className="h-4 w-4 fill-cyan-electric text-cyan-electric" />

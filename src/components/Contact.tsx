@@ -6,6 +6,7 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { ArrowUpRight, Check, ChevronDown, CircleCheck, Mail } from "lucide-react";
 import { IMAGES } from "@/lib/constants";
 import { CONTACT_PROJECT_TYPES } from "@/lib/contact-types";
+import { trackEvent } from "@/lib/client-track";
 import { SITE_EMAIL } from "@/lib/seo";
 import { TEAM } from "@/lib/team";
 
@@ -42,6 +43,11 @@ export default function Contact() {
         }),
       });
       if (!res.ok) throw new Error("Could not send brief");
+      trackEvent({
+        type: "contact",
+        action: "Submitted contact form",
+        hash: "#contact",
+      });
       form.reset();
       setProjectType("");
       setSubmitted(true);
@@ -79,6 +85,7 @@ export default function Contact() {
               </p>
               <a
                 href={`mailto:${SITE_EMAIL}`}
+                data-track="Opened email"
                 className="mt-8 inline-flex items-center gap-2 text-sm text-zinc-200 hover:text-cyan-electric"
               >
                 <Mail className="h-4 w-4" />
@@ -147,6 +154,7 @@ export default function Contact() {
                   <button
                     type="submit"
                     disabled={sending}
+                    data-track="Clicked submit brief"
                     className="glow-btn mt-2 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-sm font-semibold text-obsidian disabled:opacity-70"
                   >
                     {sending ? "Sending brief…" : "Book a Strategy Call"}
@@ -190,6 +198,7 @@ function FounderDirect() {
       <div className="mt-3 flex flex-wrap items-center gap-2">
         <a
           href={`mailto:${SITE_EMAIL}`}
+          data-track="Opened founder email"
           className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[12px] text-zinc-200 hover:text-cyan-electric"
         >
           <Mail className="h-3.5 w-3.5" />
@@ -199,6 +208,7 @@ function FounderDirect() {
           href={founder.linkedIn}
           target="_blank"
           rel="noreferrer"
+          data-track="Opened founder LinkedIn"
           className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[12px] text-zinc-200 hover:text-cyan-electric"
         >
           LinkedIn

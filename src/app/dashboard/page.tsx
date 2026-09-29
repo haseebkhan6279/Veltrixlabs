@@ -18,7 +18,7 @@ export default function DashboardPage() {
           <BrandLogo size={36} />
           <div>
             <p className="text-sm font-semibold text-zinc-100">{SITE_NAME}</p>
-            <p className="text-[11px] text-zinc-500">Internal analytics & queries</p>
+            <p className="text-[11px] text-zinc-500">Internal analytics & session audit</p>
           </div>
         </div>
       </div>

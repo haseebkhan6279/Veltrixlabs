@@ -207,6 +207,7 @@ export default async function ServiceLandingPage({ params }: Props) {
           </p>
           <Link
             href="/#contact"
+            data-track="Service page start project"
             className="mt-6 inline-flex rounded-full bg-gradient-to-r from-cyan-electric to-purple-neon px-5 py-2.5 text-sm font-semibold text-obsidian"
           >
             Start a project

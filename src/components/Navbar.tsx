@@ -80,6 +80,7 @@ export default function Navbar() {
           <Magnetic>
             <motion.a
               href="/#contact"
+              data-track="Nav strategy call"
               whileTap={{ scale: 0.98 }}
               className="glow-btn hidden items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-obsidian md:inline-flex"
             >
@@ -125,6 +126,7 @@ export default function Navbar() {
               </div>
               <a
                 href="/#contact"
+                data-track="Mobile nav strategy call"
                 onClick={() => setOpen(false)}
                 className="glow-btn mt-auto inline-flex items-center justify-center gap-2 rounded-full px-5 py-3.5 text-sm font-semibold text-obsidian"
               >

@@ -124,6 +124,7 @@ export default function CaseStudies() {
             <button
               type="button"
               aria-expanded={!showLoadMore}
+              data-track="Load more projects"
               onClick={() => setVisibleCount((count) => count + PREVIEW_COUNT)}
               className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 py-2 pl-6 pr-2 text-sm font-semibold text-zinc-100 transition hover:border-cyan-electric/40 hover:bg-white/10"
             >
@@ -237,6 +238,7 @@ function ProjectCard({
               href={primaryHref}
               target="_blank"
               rel="noreferrer"
+              data-track={`Opened ${project.name}`}
               aria-label={`Open ${project.name}`}
               className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/10 text-zinc-300 transition hover:bg-white hover:text-obsidian"
             >
@@ -256,6 +258,7 @@ function ProjectCard({
             href={dashboardHref}
             target="_blank"
             rel="noreferrer"
+            data-track={`Opened ${project.name} dashboard`}
             className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-cyan-electric to-purple-neon px-3.5 py-1.5 text-[12px] font-semibold text-obsidian"
           >
             Open dashboard
@@ -276,6 +279,7 @@ function ProjectCard({
               href={siteHref}
               target="_blank"
               rel="noreferrer"
+              data-track={`Opened ${project.name} website`}
               className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[11px] font-medium text-zinc-100 transition hover:border-cyan-electric/40 hover:text-cyan-electric"
             >
               Website
@@ -286,6 +290,7 @@ function ProjectCard({
               href={project.appStoreUrl}
               target="_blank"
               rel="noreferrer"
+              data-track={`Opened ${project.name} App Store`}
               className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[11px] font-medium text-zinc-100 transition hover:border-cyan-electric/40 hover:text-cyan-electric"
             >
               App Store
@@ -296,6 +301,7 @@ function ProjectCard({
               href={project.playStoreUrl}
               target="_blank"
               rel="noreferrer"
+              data-track={`Opened ${project.name} Play Store`}
               className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[11px] font-medium text-zinc-100 transition hover:border-cyan-electric/40 hover:text-cyan-electric"
             >
               Play Store

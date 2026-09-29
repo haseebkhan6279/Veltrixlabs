@@ -1,24 +1,44 @@
 import { NextResponse } from "next/server";
-import { getAnalyticsSummary, recordEvent } from "@/lib/analytics";
+import {
+  getAnalyticsSummary,
+  recordEvent,
+  type EventType,
+} from "@/lib/analytics";
+import { classifySource } from "@/lib/traffic";
 
 export const runtime = "nodejs";
 
+const EVENT_TYPES = new Set<EventType>([
+  "page",
+  "section",
+  "click",
+  "contact",
+  "leave",
+]);
+
 function isBot(ua: string) {
   return /bot|crawl|spider|slurp|facebook|preview/i.test(ua);
+}
+
+function clip(value: unknown, max: number) {
+  return typeof value === "string" ? value.trim().slice(0, max) : "";
 }
 
 export async function POST(request: Request) {
   const ua = request.headers.get("user-agent") ?? "";
   if (isBot(ua)) return NextResponse.json({ ok: true });
 
-  let body: { path?: string; referrer?: string; session?: string };
+  let body: Record<string, unknown>;
   try {
-    body = (await request.json()) as typeof body;
+    body = (await request.json()) as Record<string, unknown>;
   } catch {
     return NextResponse.json({ ok: false }, { status: 400 });
   }
 
-  const pagePath = typeof body.path === "string" ? body.path.slice(0, 180) : "";
+  const type = EVENT_TYPES.has(body.type as EventType)
+    ? (body.type as EventType)
+    : "page";
+  const pagePath = clip(body.path, 180) || "/";
   if (
     !pagePath.startsWith("/") ||
     pagePath.startsWith("/dashboard") ||
@@ -27,13 +47,29 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true });
   }
 
+  const referrer = clip(body.referrer, 300);
+  const utmSource = clip(body.source, 80);
+
   try {
     await recordEvent({
       t: Date.now(),
+      type,
       path: pagePath,
-      referrer: typeof body.referrer === "string" ? body.referrer.slice(0, 300) : "",
+      hash: clip(body.hash, 80),
+      session: clip(body.session, 80) || "anon",
+      visitor: clip(body.visitor, 80),
+      referrer,
+      source: classifySource(referrer, utmSource),
+      medium: clip(body.medium, 80),
+      campaign: clip(body.campaign, 120),
+      landing: clip(body.landing, 220),
+      action: clip(body.action, 120),
+      href: clip(body.href, 220),
+      country:
+        request.headers.get("x-vercel-ip-country") ??
+        request.headers.get("cf-ipcountry") ??
+        "",
       ua: ua.slice(0, 180),
-      session: typeof body.session === "string" ? body.session.slice(0, 80) : "anon",
     });
   } catch (error) {
     console.error("analytics POST", error);
@@ -53,10 +89,14 @@ export async function GET() {
       today: 0,
       last7: 0,
       sessions: 0,
+      contactedSessions: 0,
       days: [],
       topPages: [],
       topReferrers: [],
+      topDevices: [],
+      topCountries: [],
       recent: [],
+      sessionAudits: [],
     });
   }
 }

@@ -90,6 +90,7 @@ export default function Footer() {
             </p>
             <a
               href="/#contact"
+              data-track="Footer strategy call"
               className="glow-btn mt-7 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-obsidian"
             >
               Book a Strategy Call

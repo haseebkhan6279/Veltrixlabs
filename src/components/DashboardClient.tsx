@@ -1,7 +1,25 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Mail } from "lucide-react";
+
+type SessionAudit = {
+  id: string;
+  start: number;
+  end: number;
+  durationMs: number;
+  country: string;
+  device: string;
+  source: string;
+  medium: string;
+  campaign: string;
+  landing: string;
+  referrer: string;
+  pages: string[];
+  journey: string[];
+  actions: string[];
+  contacted: boolean;
+};
 
 type Summary = {
   persist?: "redis" | "file" | "ephemeral";
@@ -9,10 +27,14 @@ type Summary = {
   today: number;
   last7: number;
   sessions: number;
+  contactedSessions?: number;
   days: { label: string; count: number }[];
   topPages: { path: string; count: number }[];
   topReferrers: { source: string; count: number }[];
-  recent: { t: number; path: string; referrer: string }[];
+  topDevices?: { source: string; count: number }[];
+  topCountries?: { source: string; count: number }[];
+  recent: { t: number; path: string; referrer: string; source?: string }[];
+  sessionAudits?: SessionAudit[];
 };
 
 type ContactQuery = {
@@ -29,15 +51,21 @@ const empty: Summary = {
   today: 0,
   last7: 0,
   sessions: 0,
+  contactedSessions: 0,
   days: [],
   topPages: [],
   topReferrers: [],
+  topDevices: [],
+  topCountries: [],
   recent: [],
+  sessionAudits: [],
 };
 
 export default function DashboardClient() {
   const [data, setData] = useState<Summary>(empty);
   const [queries, setQueries] = useState<ContactQuery[]>([]);
+  const [sessionFilter, setSessionFilter] = useState("all");
+  const [openSession, setOpenSession] = useState<string | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -70,6 +98,24 @@ export default function DashboardClient() {
     start.setHours(0, 0, 0, 0);
     return q.t >= start.getTime();
   }).length;
+  const contacted = data.contactedSessions ?? 0;
+  const conversion =
+    data.sessions > 0 ? Math.round((contacted / data.sessions) * 100) : 0;
+  const sessions = data.sessionAudits ?? [];
+  const filteredSessions = useMemo(() => {
+    if (sessionFilter === "contacted") {
+      return sessions.filter((session) => session.contacted);
+    }
+    if (sessionFilter !== "all") {
+      return sessions.filter((session) => session.source === sessionFilter);
+    }
+    return sessions;
+  }, [sessions, sessionFilter]);
+  const sourceFilters = [
+    "all",
+    "contacted",
+    ...[...new Set(sessions.map((session) => session.source))].slice(0, 8),
+  ];
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
@@ -82,7 +128,8 @@ export default function DashboardClient() {
             Traffic dashboard
           </h1>
           <p className="mt-2 text-sm text-zinc-400">
-            Internal traffic and contact briefs from the live site.
+            Where each visitor came from, what they opened, and whether they
+            sent a brief.
           </p>
         </div>
         <a
@@ -101,11 +148,13 @@ export default function DashboardClient() {
         </p>
       ) : null}
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-6">
         <Kpi label="Views today" value={data.today} />
         <Kpi label="Last 7 days" value={data.last7} />
         <Kpi label="All views" value={data.total} />
         <Kpi label="Sessions" value={data.sessions} />
+        <Kpi label="Contacted" value={contacted} />
+        <Kpi label="Contact rate" value={`${conversion}%`} />
       </div>
 
       <section className="mt-8 rounded-[1.6rem] border border-white/10 bg-slate-card p-6">
@@ -126,6 +175,153 @@ export default function DashboardClient() {
         </div>
       </section>
 
+      <section className="mt-8 rounded-[1.6rem] border border-white/10 bg-slate-card p-5 sm:p-6">
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-[0.22em] text-cyan-electric">
+              Sessions
+            </p>
+            <h2 className="mt-2 text-xl font-semibold text-zinc-50">
+              Visitor audit
+            </h2>
+            <p className="mt-1 text-sm text-zinc-400">
+              Source, device, landing page, and the path they took on the site.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {sourceFilters.map((key) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setSessionFilter(key)}
+                className={`rounded-full border px-3 py-1 text-[11px] capitalize transition ${
+                  sessionFilter === key
+                    ? "border-cyan-electric/50 bg-cyan-electric/10 text-cyan-electric"
+                    : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-zinc-200"
+                }`}
+              >
+                {key}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-5 grid gap-3">
+          {filteredSessions.length === 0 ? (
+            <p className="text-sm text-zinc-500">
+              No sessions yet. Open the public site, click around, then refresh
+              this page.
+            </p>
+          ) : (
+            filteredSessions.map((session) => {
+              const open = openSession === session.id;
+              return (
+                <article
+                  key={session.id}
+                  className={`rounded-2xl border px-4 py-3 sm:px-5 ${
+                    session.contacted
+                      ? "border-cyan-electric/25 bg-cyan-electric/5"
+                      : "border-white/8 bg-black/20"
+                  }`}
+                >
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setOpenSession(open ? null : session.id)
+                    }
+                    className="flex w-full flex-wrap items-start justify-between gap-3 text-left"
+                  >
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-[11px] capitalize text-zinc-100">
+                          {session.source}
+                        </span>
+                        <span className="text-[11px] capitalize text-zinc-400">
+                          {session.device}
+                          {session.country && session.country !== "Unknown"
+                            ? ` · ${session.country}`
+                            : ""}
+                        </span>
+                        {session.contacted ? (
+                          <span className="rounded-full border border-cyan-electric/30 bg-cyan-electric/10 px-2 py-0.5 text-[11px] text-cyan-electric">
+                            Sent brief
+                          </span>
+                        ) : null}
+                      </div>
+                      <p className="mt-2 truncate text-sm text-zinc-200">
+                        Landed on {session.landing || "/"}
+                      </p>
+                      <p className="mt-1 line-clamp-2 text-xs text-zinc-500">
+                        {(session.journey.length
+                          ? session.journey
+                          : session.pages
+                        ).join(" → ") || "Opened the site"}
+                      </p>
+                    </div>
+                    <div className="shrink-0 text-right text-[11px] text-zinc-500">
+                      <p>{new Date(session.start).toLocaleString()}</p>
+                      <p className="mt-1">{formatDuration(session.durationMs)}</p>
+                    </div>
+                  </button>
+
+                  {open ? (
+                    <div className="mt-4 border-t border-white/8 pt-4 text-sm">
+                      <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                        <Meta label="Source" value={session.source} />
+                        <Meta
+                          label="Campaign"
+                          value={
+                            [session.medium, session.campaign]
+                              .filter(Boolean)
+                              .join(" / ") || "none"
+                          }
+                        />
+                        <Meta
+                          label="Referrer"
+                          value={hostOf(session.referrer) || "direct"}
+                        />
+                        <Meta
+                          label="Pages"
+                          value={`${session.pages.length || 1}`}
+                        />
+                      </dl>
+                      <p className="mt-4 text-[11px] uppercase tracking-[0.18em] text-zinc-500">
+                        Journey
+                      </p>
+                      <div className="mt-2 flex flex-wrap gap-2">
+                        {(session.journey.length
+                          ? session.journey
+                          : session.pages
+                        ).map((step, index) => (
+                          <span
+                            key={`${session.id}-${step}-${index}`}
+                            className="rounded-full border border-white/10 bg-white/5 px-2.5 py-1 text-[11px] text-zinc-200"
+                          >
+                            {index + 1}. {step}
+                          </span>
+                        ))}
+                      </div>
+                      {session.actions.length ? (
+                        <>
+                          <p className="mt-4 text-[11px] uppercase tracking-[0.18em] text-zinc-500">
+                            Actions
+                          </p>
+                          <ul className="mt-2 space-y-1 text-xs text-zinc-300">
+                            {session.actions.map((action, index) => (
+                              <li key={`${session.id}-a-${index}`}>· {action}</li>
+                            ))}
+                          </ul>
+                        </>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </article>
+              );
+            })
+          )}
+        </div>
+      </section>
+
       <div className="mt-8 grid gap-6 lg:grid-cols-2">
         <Panel title="Top pages">
           {data.topPages.length === 0 ? (
@@ -136,7 +332,7 @@ export default function DashboardClient() {
             ))
           )}
         </Panel>
-        <Panel title="Referrers">
+        <Panel title="Where they came from">
           {data.topReferrers.length === 0 ? (
             <Empty />
           ) : (
@@ -145,10 +341,28 @@ export default function DashboardClient() {
             ))
           )}
         </Panel>
+        <Panel title="Devices">
+          {(data.topDevices ?? []).length === 0 ? (
+            <Empty />
+          ) : (
+            (data.topDevices ?? []).map((row) => (
+              <Row key={row.source} label={row.source} value={row.count} />
+            ))
+          )}
+        </Panel>
+        <Panel title="Countries">
+          {(data.topCountries ?? []).length === 0 ? (
+            <Empty />
+          ) : (
+            (data.topCountries ?? []).map((row) => (
+              <Row key={row.source} label={row.source} value={row.count} />
+            ))
+          )}
+        </Panel>
       </div>
 
       <section className="mt-8 rounded-[1.6rem] border border-white/10 bg-slate-card p-6">
-        <h2 className="text-sm font-semibold text-zinc-200">Recent visits</h2>
+        <h2 className="text-sm font-semibold text-zinc-200">Recent page views</h2>
         <div className="mt-4 space-y-2">
           {data.recent.length === 0 ? (
             <Empty />
@@ -160,7 +374,8 @@ export default function DashboardClient() {
               >
                 <span className="font-mono text-cyan-electric">{hit.path}</span>
                 <span className="text-xs text-zinc-500">
-                  {new Date(hit.t).toLocaleTimeString()} · {hit.referrer || "direct"}
+                  {new Date(hit.t).toLocaleTimeString()} ·{" "}
+                  {hit.source || hostOf(hit.referrer) || "direct"}
                 </span>
               </div>
             ))
@@ -234,7 +449,7 @@ export default function DashboardClient() {
   );
 }
 
-function Kpi({ label, value }: { label: string; value: number }) {
+function Kpi({ label, value }: { label: string; value: number | string }) {
   return (
     <div className="rounded-[1.4rem] border border-white/10 bg-slate-card p-5">
       <p className="text-xs uppercase tracking-[0.18em] text-zinc-500">{label}</p>
@@ -255,8 +470,19 @@ function Panel({ title, children }: { title: string; children: ReactNode }) {
 function Row({ label, value }: { label: string; value: number }) {
   return (
     <div className="flex items-center justify-between gap-3 text-sm">
-      <span className="truncate text-zinc-300">{label}</span>
+      <span className="truncate capitalize text-zinc-300">{label}</span>
       <span className="font-mono text-cyan-electric">{value}</span>
+    </div>
+  );
+}
+
+function Meta({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt className="text-[11px] uppercase tracking-[0.16em] text-zinc-500">
+        {label}
+      </dt>
+      <dd className="mt-1 truncate text-zinc-200">{value}</dd>
     </div>
   );
 }
@@ -267,4 +493,21 @@ function Empty() {
       No visits yet. Browse the site, then refresh this page.
     </p>
   );
+}
+
+function formatDuration(ms: number) {
+  const seconds = Math.max(0, Math.round(ms / 1000));
+  if (seconds < 60) return `${seconds}s on site`;
+  const minutes = Math.floor(seconds / 60);
+  const rest = seconds % 60;
+  return rest ? `${minutes}m ${rest}s on site` : `${minutes}m on site`;
+}
+
+function hostOf(value: string) {
+  if (!value) return "";
+  try {
+    return new URL(value).hostname.replace(/^www\./, "");
+  } catch {
+    return value.slice(0, 40);
+  }
 }
