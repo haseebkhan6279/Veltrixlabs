@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import DashboardClient from "@/components/DashboardClient";
+import DashboardLogin from "@/components/DashboardLogin";
 import BrandLogo from "@/components/BrandLogo";
+import {
+  dashboardPasswordConfigured,
+  isDashboardAuthed,
+} from "@/lib/dashboard-auth";
 import { SITE_NAME } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -10,7 +15,10 @@ export const metadata: Metadata = {
   alternates: { canonical: "/dashboard" },
 };
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const configured = dashboardPasswordConfigured();
+  const authed = configured ? await isDashboardAuthed() : false;
+
   return (
     <main className="min-h-screen bg-obsidian">
       <div className="border-b border-white/8 px-4 py-4 sm:px-6">
@@ -22,7 +30,7 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
-      <DashboardClient />
+      {authed ? <DashboardClient /> : <DashboardLogin configured={configured} />}
     </main>
   );
 }

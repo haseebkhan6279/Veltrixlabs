@@ -28,8 +28,8 @@ export default function BrandLogo({
           y2="12"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.5" stopColor="#22D3EE" />
-          <stop offset="0.5" stopColor="#A855F7" />
+          <stop offset="0.5" stopColor="#c6ff3d" />
+          <stop offset="0.5" stopColor="#ff6a3d" />
         </linearGradient>
       </defs>
       <path

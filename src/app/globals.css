@@ -1,23 +1,25 @@
 @import "tailwindcss";
 
 :root {
-  --background: #09090b;
+  --background: #0a0a09;
   --foreground: #fafafa;
-  --obsidian: #09090b;
-  --slate: #18181b;
-  --charcoal: #27272a;
-  --cyan: #22d3ee;
-  --purple: #a855f7;
+  --obsidian: #0a0a09;
+  --slate: #141412;
+  --charcoal: #22221f;
+  --volt: #c6ff3d;
+  --sun: #ffb547;
+  --ember: #ff6a3d;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-obsidian: #09090b;
-  --color-slate-card: #18181b;
-  --color-charcoal: #27272a;
-  --color-cyan-electric: #22d3ee;
-  --color-purple-neon: #a855f7;
+  --color-obsidian: #0a0a09;
+  --color-slate-card: #141412;
+  --color-charcoal: #22221f;
+  --color-volt: #c6ff3d;
+  --color-sun: #ffb547;
+  --color-ember: #ff6a3d;
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
@@ -35,7 +37,7 @@ body {
 }
 
 ::selection {
-  background: rgba(34, 211, 238, 0.28);
+  background: rgba(198, 255, 61, 0.28);
   color: #fff;
 }
 
@@ -44,23 +46,24 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #09090b;
+  background: #0a0a09;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #22d3ee, #a855f7);
+  background: linear-gradient(180deg, #c6ff3d, #ff6a3d);
   border-radius: 999px;
 }
 
 .glass {
-  background: rgba(24, 24, 27, 0.55);
+  background: rgba(22, 22, 19, 0.55);
   backdrop-filter: blur(22px);
   -webkit-backdrop-filter: blur(22px);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .gradient-text {
-  background: linear-gradient(120deg, #22d3ee 10%, #a855f7 55%, #f0abfc 100%);
+  background: linear-gradient(110deg, #c6ff3d 0%, #ffb547 35%, #ff6a3d 60%, #c6ff3d 100%);
+  background-size: 220% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -68,27 +71,36 @@ body {
 
 .glow-btn {
   position: relative;
-  background: linear-gradient(120deg, #22d3ee, #6366f1, #a855f7);
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(120deg, #c6ff3d, #ffb547, #ff6a3d, #c6ff3d);
+  background-size: 250% 100%;
+  background-position: 0% 50%;
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.08),
-    0 10px 40px rgba(34, 211, 238, 0.22),
-    0 0 80px rgba(168, 85, 247, 0.18);
-  transition: transform 0.35s ease, box-shadow 0.35s ease, filter 0.35s ease;
+    0 10px 40px rgba(198, 255, 61, 0.22),
+    0 0 80px rgba(255, 106, 61, 0.18);
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    filter 0.35s ease,
+    background-position 0.6s ease;
 }
 
 .glow-btn:hover {
+  background-position: 100% 50%;
   transform: translateY(-2px) scale(1.02);
   filter: brightness(1.08);
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.14),
-    0 16px 48px rgba(34, 211, 238, 0.32),
-    0 0 100px rgba(168, 85, 247, 0.28);
+    0 16px 48px rgba(198, 255, 61, 0.32),
+    0 0 100px rgba(255, 106, 61, 0.28);
 }
 
 .glow-ring {
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 0 40px rgba(34, 211, 238, 0.08),
+    0 0 40px rgba(198, 255, 61, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
@@ -104,9 +116,9 @@ body {
 
 .radial-glow {
   background:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(34, 211, 238, 0.16), transparent 55%),
-    radial-gradient(ellipse 50% 40% at 90% 10%, rgba(168, 85, 247, 0.14), transparent 50%),
-    radial-gradient(ellipse 40% 30% at 10% 20%, rgba(99, 102, 241, 0.12), transparent 50%);
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(198, 255, 61, 0.16), transparent 55%),
+    radial-gradient(ellipse 50% 40% at 90% 10%, rgba(255, 106, 61, 0.14), transparent 50%),
+    radial-gradient(ellipse 40% 30% at 10% 20%, rgba(255, 181, 71, 0.12), transparent 50%);
 }
 
 .grid-overlay {
@@ -193,10 +205,10 @@ body {
 }
 
 .reviews-swiper .swiper-slide-active .review-card {
-  border-color: rgba(34, 211, 238, 0.4);
+  border-color: rgba(198, 255, 61, 0.4);
   box-shadow:
-    0 0 0 1px rgba(168, 85, 247, 0.18),
-    0 24px 60px rgba(34, 211, 238, 0.16);
+    0 0 0 1px rgba(255, 106, 61, 0.18),
+    0 24px 60px rgba(198, 255, 61, 0.16);
 }
 
 .swiper-pagination-bullet {
@@ -205,7 +217,7 @@ body {
 }
 
 .swiper-pagination-bullet-active {
-  background: linear-gradient(120deg, #22d3ee, #a855f7) !important;
+  background: linear-gradient(120deg, #c6ff3d, #ff6a3d) !important;
 }
 
 input,
@@ -221,7 +233,7 @@ a {
 
 .swiper-button-next,
 .swiper-button-prev {
-  color: #22d3ee !important;
+  color: #c6ff3d !important;
 }
 
 .swiper-button-next::after,
@@ -245,7 +257,7 @@ a {
   transition: opacity 0.35s ease;
   background: radial-gradient(
     420px circle at var(--spot-x) var(--spot-y),
-    rgba(34, 211, 238, 0.18),
+    rgba(198, 255, 61, 0.18),
     transparent 42%
   );
 }
@@ -275,7 +287,200 @@ a {
   .animate-float-delayed,
   .animate-pulse-glow,
   .tech-track,
-  .reviews-ticker {
+  .reviews-ticker,
+  .glow-btn::after,
+  .spin-border::before,
+  .aurora-blob,
+  .shimmer-line::after {
     animation: none !important;
   }
+}
+
+/* Light sweep across primary buttons. */
+.glow-btn::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.55) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  will-change: transform;
+  animation: shine 3.6s ease-in-out infinite;
+}
+
+@keyframes shine {
+  0%,
+  55% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+/* Rotating conic border. The element's own content supplies the fill. */
+@property --spin-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.spin-border {
+  position: relative;
+  isolation: isolate;
+}
+
+.spin-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--spin-angle),
+    transparent 0deg,
+    #c6ff3d 60deg,
+    #ff6a3d 120deg,
+    transparent 180deg,
+    transparent 360deg
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: spin-angle 5s linear infinite;
+  /* Animating a custom property repaints every frame; only pay for it while
+     someone is actually looking at the card. */
+  animation-play-state: paused;
+}
+
+.spin-border:hover::before,
+.spin-border.spin-border-live::before {
+  animation-play-state: running;
+}
+
+@keyframes spin-angle {
+  to {
+    --spin-angle: 360deg;
+  }
+}
+
+/* Drifting background light. */
+.aurora-blob {
+  animation: aurora 18s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes aurora {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(8%, -6%, 0) scale(1.15);
+  }
+  100% {
+    transform: translate3d(-6%, 5%, 0) scale(0.95);
+  }
+}
+
+/* Travelling highlight along a 1px rule. */
+.shimmer-line {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, #c6ff3d, #ff6a3d, transparent);
+  transform: translateX(-100%);
+  animation: shimmer-run 4s ease-in-out infinite;
+}
+
+@keyframes shimmer-run {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.stroke-text {
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(250, 250, 250, 0.22);
+}
+
+/* Heavy blurs cost a lot of GPU on phones; soften them there. */
+@media (max-width: 767px) {
+  .glass {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .aurora-blob {
+    animation-duration: 26s;
+  }
+}
+
+/* Preloader guards: skip for returning visitors and reduced motion, and never
+   let it stick if hydration fails or stalls. */
+.preloader {
+  animation: preloader-failsafe 0.3s ease 4s forwards;
+}
+
+html[data-intro="skip"] .preloader {
+  display: none;
+}
+
+@keyframes preloader-failsafe {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader {
+    display: none;
+  }
+}
+
+.cursor-ring.cursor-active {
+  background: rgba(198, 255, 61, 0.1);
+}
+
+.cursor-ring:has(span:not(:empty)) {
+  background: #c6ff3d;
+  border-color: transparent;
+}
+
+.flow-progress {
+  animation: flow-progress linear forwards;
+  transform: scaleX(0);
+}
+
+@keyframes flow-progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.process-card.is-live .process-dot {
+  background: #c6ff3d;
+  box-shadow: 0 0 0 4px rgba(198, 255, 61, 0.15), 0 0 16px rgba(198, 255, 61, 0.6);
+}
+
+/* Glow blobs are drawn as radial gradients, not filter: blur(). A blurred
+   layer is re-filtered by the GPU on every frame it moves; a gradient is
+   rasterised once and then only translated. */
+.aurora-blob {
+  background: radial-gradient(closest-side, var(--blob), transparent);
 }

@@ -8,10 +8,10 @@ import { TEAM } from "@/lib/team";
 export default function Team() {
   return (
     <section id="team" className="relative scroll-mt-24 overflow-hidden py-16 md:scroll-mt-28 md:py-32">
-      <div className="pointer-events-none absolute right-0 top-20 h-72 w-72 rounded-full bg-cyan-electric/10 blur-[110px]" />
+      <div className="pointer-events-none absolute right-0 top-20 h-72 w-72 rounded-full bg-volt/10 blur-[110px]" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-10 max-w-2xl md:mb-14">
-          <p className="text-xs uppercase tracking-[0.28em] text-cyan-electric">
+          <p className="text-xs uppercase tracking-[0.28em] text-volt">
             The studio
           </p>
           <SplitReveal className="mt-3 text-[1.85rem] font-semibold tracking-tight text-zinc-50 sm:text-5xl">
@@ -32,12 +32,12 @@ export default function Team() {
                 />
                 <div className="relative flex items-start gap-4 sm:gap-5">
                   <div
-                    className={`grid h-16 w-16 shrink-0 place-items-center rounded-3xl bg-gradient-to-br ${person.accent} font-mono text-xl font-bold text-obsidian shadow-[0_12px_40px_rgba(34,211,238,0.22)] sm:h-20 sm:w-20 sm:text-2xl`}
+                    className={`grid h-16 w-16 shrink-0 place-items-center rounded-3xl bg-gradient-to-br ${person.accent} font-mono text-xl font-bold text-obsidian shadow-[0_12px_40px_rgba(198,255,61,0.22)] sm:h-20 sm:w-20 sm:text-2xl`}
                   >
                     {person.initials}
                   </div>
                   <div className="min-w-0">
-                    <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-cyan-electric">
+                    <p className="font-mono text-[11px] uppercase tracking-[0.2em] text-volt">
                       0{index + 1} · {person.role.split(" & ")[0]}
                     </p>
                     <h3 className="mt-1 text-xl font-semibold tracking-tight text-zinc-50 sm:text-2xl">
@@ -52,7 +52,7 @@ export default function Team() {
                 </p>
 
                 <p className="relative mt-4 flex items-center gap-2 text-xs text-zinc-500">
-                  <MapPin className="h-3.5 w-3.5 text-cyan-electric" />
+                  <MapPin className="h-3.5 w-3.5 text-volt" />
                   {person.location}
                 </p>
                 <p className="relative mt-1 text-xs text-zinc-500">
@@ -75,7 +75,7 @@ export default function Team() {
                     href={person.linkedIn}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs text-zinc-300 transition hover:border-cyan-electric/40 hover:text-cyan-electric"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs text-zinc-300 transition hover:border-volt/40 hover:text-volt"
                   >
                     <LinkedinIcon />
                     LinkedIn
@@ -86,7 +86,7 @@ export default function Team() {
                       href={person.github}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs text-zinc-300 transition hover:border-cyan-electric/40 hover:text-cyan-electric"
+                      className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs text-zinc-300 transition hover:border-volt/40 hover:text-volt"
                     >
                       <GithubIcon />
                       GitHub
@@ -94,14 +94,14 @@ export default function Team() {
                   ) : null}
                   <a
                     href={`mailto:${person.email}`}
-                    className="inline-flex max-w-full items-center gap-2 break-all rounded-full border border-white/10 px-4 py-2 text-xs text-zinc-300 transition hover:border-cyan-electric/40 hover:text-cyan-electric"
+                    className="inline-flex max-w-full items-center gap-2 break-all rounded-full border border-white/10 px-4 py-2 text-xs text-zinc-300 transition hover:border-volt/40 hover:text-volt"
                   >
                     <Mail className="h-3.5 w-3.5" />
                     {person.email}
                   </a>
                   <a
                     href={`tel:${person.phone.replace(/\s/g, "")}`}
-                    className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs text-zinc-300 transition hover:border-cyan-electric/40 hover:text-cyan-electric"
+                    className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs text-zinc-300 transition hover:border-volt/40 hover:text-volt"
                   >
                     <Phone className="h-3.5 w-3.5" />
                     {person.phone}

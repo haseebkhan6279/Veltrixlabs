@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { BLOG_POSTS, getPost } from "@/lib/blog";
 import { SITE_NAME, SITE_URL, buildMetadata } from "@/lib/seo";
 
@@ -54,10 +55,10 @@ export default async function BlogPostPage({ params }: Props) {
       />
       <Navbar />
       <article className="mx-auto max-w-3xl px-4 pb-20 pt-28 sm:px-6">
-        <Link href="/blog" className="text-sm text-cyan-electric hover:underline">
+        <Link href="/blog" className="text-sm text-volt hover:underline">
           ← All notes
         </Link>
-        <p className="mt-6 text-[11px] uppercase tracking-[0.18em] text-cyan-electric">
+        <p className="mt-6 text-[11px] uppercase tracking-[0.18em] text-volt">
           {post.category} · <time dateTime={post.date}>{post.date}</time>
         </p>
         <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight text-zinc-50 sm:text-5xl">
@@ -71,6 +72,7 @@ export default async function BlogPostPage({ params }: Props) {
         </div>
       </article>
       <Footer />
+      <WhatsAppButton />
     </main>
   );
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import { animate, stagger, utils } from "animejs";
 import { Bot, CalendarCheck, PhoneMissed, Workflow } from "lucide-react";
 import SplitReveal from "@/components/SplitReveal";
 
@@ -26,13 +28,72 @@ const STEPS = [
   },
 ];
 
+const STEP_MS = 2400;
+
 export default function AiWorkflow() {
+  const root = useRef<HTMLElement>(null);
+  const [inView, setInView] = useState(false);
+  const [active, setActive] = useState(0);
+
+  // Entrance: steps stagger out from the first cell of the 2x2 grid and the
+  // recording wipes open. Hidden only once JS is running, so no-JS still reads.
+  useEffect(() => {
+    const node = root.current;
+    if (!node) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const steps = node.querySelectorAll(".flow-step");
+    const video = node.querySelector(".flow-video");
+
+    if (!reduced) {
+      utils.set(steps, { opacity: 0, translateY: 40, scale: 0.94 });
+      if (video) utils.set(video, { clipPath: "inset(0% 100% 0% 0% round 26px)" });
+    }
+
+    let played = false;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setInView(Boolean(entry?.isIntersecting));
+        if (!entry?.isIntersecting || played || reduced) return;
+        played = true;
+        animate(steps, {
+          opacity: 1,
+          translateY: 0,
+          scale: 1,
+          delay: stagger(110, { grid: [2, 2], from: "first" }),
+          duration: 900,
+          ease: "outExpo",
+        });
+        if (video) {
+          animate(video, {
+            clipPath: "inset(0% 0% 0% 0% round 26px)",
+            duration: 1300,
+            delay: 250,
+            ease: "inOutQuart",
+          });
+        }
+      },
+      { threshold: 0.2 },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  // Walk the pipeline while the section is on screen.
+  useEffect(() => {
+    if (!inView) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(() => {
+      setActive((current) => (current + 1) % STEPS.length);
+    }, STEP_MS);
+    return () => window.clearInterval(id);
+  }, [inView]);
+
   return (
-    <section id="ai" className="relative scroll-mt-24 overflow-hidden py-16 md:scroll-mt-28 md:py-28">
-      <div className="pointer-events-none absolute right-[-10%] top-10 h-72 w-72 rounded-full bg-purple-neon/15 blur-[110px]" />
+    <section id="ai" ref={root} className="relative scroll-mt-24 overflow-hidden py-16 md:scroll-mt-28 md:py-28">
+      <div className="aurora-blob pointer-events-none absolute right-[-10%] top-10 h-72 w-72 rounded-full [--blob:rgba(255,106,61,0.26)]" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-10 max-w-2xl md:mb-14">
-          <p className="text-xs uppercase tracking-[0.28em] text-cyan-electric">
+          <p className="text-xs uppercase tracking-[0.28em] text-volt">
             AI operations
           </p>
           <SplitReveal className="mt-3 text-[1.85rem] font-semibold tracking-tight text-zinc-50 sm:text-5xl">
@@ -49,25 +110,46 @@ export default function AiWorkflow() {
           <ol className="grid gap-3 sm:grid-cols-2">
             {STEPS.map((step, index) => {
               const Icon = step.icon;
+              const on = index === active;
               return (
                 <li
                   key={step.title}
-                  className="relative rounded-2xl border border-white/10 bg-white/[0.03] p-5"
+                  onMouseEnter={() => setActive(index)}
+                  className={`flow-step relative overflow-hidden rounded-2xl border p-5 transition-[border-color,background-color,box-shadow] duration-500 ${
+                    on
+                      ? "border-volt/40 bg-volt/[0.06] shadow-[0_0_40px_rgba(198,255,61,0.12)]"
+                      : "border-white/10 bg-white/[0.03]"
+                  }`}
                 >
-                  <div className="mb-3 flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-cyan-electric">
-                    <span className="grid h-8 w-8 place-items-center rounded-full border border-white/10 bg-black/40 text-cyan-electric">
+                  <div className="mb-3 flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-volt">
+                    <span
+                      className={`grid h-8 w-8 place-items-center rounded-full border transition-all duration-500 ${
+                        on
+                          ? "scale-110 border-volt/50 bg-volt text-obsidian"
+                          : "border-white/10 bg-black/40 text-volt"
+                      }`}
+                    >
                       <Icon className="h-4 w-4" />
                     </span>
                     0{index + 1}
                   </div>
                   <h3 className="text-lg font-semibold text-zinc-50">{step.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-zinc-400">{step.copy}</p>
+                  <span className="absolute inset-x-0 bottom-0 h-0.5 bg-white/5">
+                    {on && inView ? (
+                      <span
+                        key={active}
+                        className="flow-progress block h-full origin-left bg-gradient-to-r from-volt to-ember"
+                        style={{ animationDuration: `${STEP_MS}ms` }}
+                      />
+                    ) : null}
+                  </span>
                 </li>
               );
             })}
           </ol>
 
-          <div className="overflow-hidden rounded-[1.6rem] border border-white/10 bg-charcoal">
+          <div className="flow-video spin-border overflow-hidden rounded-[1.6rem] border border-white/10 bg-charcoal">
             <video
               src="/videos/zallo.webm"
               muted
@@ -77,7 +159,13 @@ export default function AiWorkflow() {
               className="aspect-video w-full object-cover object-top"
             />
             <div className="border-t border-white/8 px-5 py-4">
-              <p className="text-sm font-semibold text-zinc-100">Zallo.ai pipeline</p>
+              <p className="flex items-center gap-2 text-sm font-semibold text-zinc-100">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ember opacity-75 motion-reduce:animate-none" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-ember" />
+                </span>
+                Zallo.ai pipeline
+              </p>
               <p className="mt-1 text-xs text-zinc-500">
                 Site, multi-tenant CRM, and staff app — the recording is from the
                 live product, not a mock.

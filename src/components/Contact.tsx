@@ -2,8 +2,9 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
+import { motion } from "motion/react";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { ArrowUpRight, Check, ChevronDown, CircleCheck, Mail } from "lucide-react";
+import { ArrowUpRight, Check, ChevronDown, Mail } from "lucide-react";
 import { IMAGES } from "@/lib/constants";
 import { CONTACT_PROJECT_TYPES } from "@/lib/contact-types";
 import { trackEvent } from "@/lib/client-track";
@@ -11,7 +12,9 @@ import { SITE_EMAIL } from "@/lib/seo";
 import { TEAM } from "@/lib/team";
 
 const fieldClass =
-  "w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-zinc-50 outline-none transition focus:border-cyan-electric/60";
+  "w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-zinc-50 outline-none transition focus:-translate-y-0.5 focus:border-volt/60 focus:shadow-[0_10px_30px_-12px_rgba(198,255,61,0.45)]";
+
+const ease = [0.22, 1, 0.36, 1] as const;
 
 export default function Contact() {
   const [parent] = useAutoAnimate({ duration: 380 });
@@ -66,13 +69,19 @@ export default function Contact() {
             src={IMAGES.cta}
             alt="Abstract gradient used for the strategy-call banner"
             fill
-            className="object-cover opacity-40"
+            className="object-cover opacity-40 [filter:hue-rotate(185deg)]"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-br from-obsidian via-obsidian/80 to-purple-neon/30" />
+          <div className="absolute inset-0 bg-gradient-to-br from-obsidian via-obsidian/80 to-ember/30" />
+          <div className="aurora-blob pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full [--blob:rgba(198,255,61,0.22)]" />
           <div className="relative grid gap-8 p-5 sm:gap-10 sm:p-8 md:p-12 lg:grid-cols-[0.9fr_1.1fr] lg:p-16">
-            <div>
-              <p className="text-xs uppercase tracking-[0.28em] text-cyan-electric">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease }}
+            >
+              <p className="text-xs uppercase tracking-[0.28em] text-volt">
                 Start a conversation
               </p>
               <h2 className="mt-4 text-[1.85rem] font-semibold tracking-tight text-zinc-50 sm:text-5xl">
@@ -86,21 +95,25 @@ export default function Contact() {
               <a
                 href={`mailto:${SITE_EMAIL}`}
                 data-track="Opened email"
-                className="mt-8 inline-flex items-center gap-2 text-sm text-zinc-200 hover:text-cyan-electric"
+                className="mt-8 inline-flex items-center gap-2 text-sm text-zinc-200 hover:text-volt"
               >
                 <Mail className="h-4 w-4" />
                 {SITE_EMAIL}
               </a>
               <FounderDirect />
-            </div>
+            </motion.div>
 
-            <div
+            <motion.div
               ref={parent}
-              className="glass rounded-[1.6rem] p-4 sm:p-6 md:p-8"
+              initial={{ opacity: 0, y: 50, scale: 0.97 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.9, delay: 0.15, ease }}
+              className="glass spin-border rounded-[1.6rem] p-4 sm:p-6 md:p-8"
             >
               {submitted ? (
                 <div className="flex min-h-[360px] flex-col items-center justify-center text-center">
-                  <CircleCheck className="h-14 w-14 text-cyan-electric" />
+                  <SuccessMark />
                   <h3 className="mt-4 text-2xl font-semibold text-zinc-50">
                     Strategy call requested.
                   </h3>
@@ -111,7 +124,7 @@ export default function Contact() {
                   <button
                     type="button"
                     onClick={() => setSubmitted(false)}
-                    className="mt-6 text-sm text-cyan-electric underline-offset-4 hover:underline"
+                    className="mt-6 text-sm text-volt underline-offset-4 hover:underline"
                   >
                     Send another brief
                   </button>
@@ -162,11 +175,44 @@ export default function Contact() {
                   </button>
                 </form>
               )}
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>
     </section>
+  );
+}
+
+function SuccessMark() {
+  return (
+    <motion.svg
+      viewBox="0 0 56 56"
+      className="h-16 w-16 text-volt"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="3"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      initial={{ scale: 0.6, rotate: -20 }}
+      animate={{ scale: 1, rotate: 0 }}
+      transition={{ type: "spring", stiffness: 260, damping: 16 }}
+      aria-hidden
+    >
+      <motion.circle
+        cx="28"
+        cy="28"
+        r="25"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 0.6, ease }}
+      />
+      <motion.path
+        d="M17 29 L25 37 L40 20"
+        initial={{ pathLength: 0 }}
+        animate={{ pathLength: 1 }}
+        transition={{ duration: 0.45, delay: 0.5, ease }}
+      />
+    </motion.svg>
   );
 }
 
@@ -199,7 +245,7 @@ function FounderDirect() {
         <a
           href={`mailto:${SITE_EMAIL}`}
           data-track="Opened founder email"
-          className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[12px] text-zinc-200 hover:text-cyan-electric"
+          className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[12px] text-zinc-200 hover:text-volt"
         >
           <Mail className="h-3.5 w-3.5" />
           {SITE_EMAIL}
@@ -209,7 +255,7 @@ function FounderDirect() {
           target="_blank"
           rel="noreferrer"
           data-track="Opened founder LinkedIn"
-          className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[12px] text-zinc-200 hover:text-cyan-electric"
+          className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[12px] text-zinc-200 hover:text-volt"
         >
           LinkedIn
         </a>
@@ -266,7 +312,7 @@ function ProjectTypeSelect({
         {open ? (
           <ul
             role="listbox"
-            className="absolute inset-x-0 top-[calc(100%+8px)] z-30 max-h-64 overflow-auto rounded-xl border border-white/10 bg-[#18181b] p-1 shadow-[0_18px_50px_rgba(0,0,0,0.45)]"
+            className="absolute inset-x-0 top-[calc(100%+8px)] z-30 max-h-64 overflow-auto rounded-xl border border-white/10 bg-[#141412] p-1 shadow-[0_18px_50px_rgba(0,0,0,0.45)]"
           >
             {CONTACT_PROJECT_TYPES.map((type) => {
               const selected = type === value;
@@ -282,7 +328,7 @@ function ProjectTypeSelect({
                     }}
                     className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-left text-sm transition ${
                       selected
-                        ? "bg-white/10 text-cyan-electric"
+                        ? "bg-white/10 text-volt"
                         : "text-zinc-100 hover:bg-white/10"
                     }`}
                   >

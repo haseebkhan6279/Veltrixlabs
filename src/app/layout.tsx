@@ -10,7 +10,11 @@ import {
   SITE_TAGLINE,
   SITE_URL,
 } from "@/lib/seo";
+import { INTRO_SEEN_KEY } from "@/lib/intro-key";
 import "./globals.css";
+
+// Runs before first paint so returning visitors never see the preloader flash.
+const introScript = `try{if(sessionStorage.getItem("${INTRO_SEEN_KEY}"))document.documentElement.dataset.intro="skip"}catch(e){}`;
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,7 +32,7 @@ const inter = Inter({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#09090b",
+  themeColor: "#0a0a09",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
@@ -97,9 +101,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         suppressHydrationWarning
         className="min-h-full bg-obsidian font-sans text-zinc-50"
       >
+        <script dangerouslySetInnerHTML={{ __html: introScript }} />
         <a
           href="#top"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-cyan-electric focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-obsidian"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-volt focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-obsidian"
         >
           Skip to content
         </a>

@@ -11,6 +11,8 @@ type Props = {
   className?: string;
   delay?: number;
   once?: boolean;
+  /** Hold the reveal until this turns true (e.g. until the preloader lifts). */
+  play?: boolean;
 };
 
 export default function SplitReveal({
@@ -19,12 +21,14 @@ export default function SplitReveal({
   className = "",
   delay = 0,
   once = true,
+  play = true,
 }: Props) {
   const ref = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const node = ref.current;
-    if (!node) return;
+    if (!node || !play) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     gsap.registerPlugin(SplitText, ScrollTrigger);
 
     const split = new SplitText(node, {
@@ -52,7 +56,7 @@ export default function SplitReveal({
       tween.kill();
       split.revert();
     };
-  }, [children, delay, once]);
+  }, [children, delay, once, play]);
 
   return (
     <Tag ref={ref} className={className}>

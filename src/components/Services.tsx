@@ -52,7 +52,37 @@ export default function Services() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const mobile = window.matchMedia("(max-width: 767px)").matches;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const ctx = gsap.context(() => {
+      // Image drift inside each card; desktop only, where scrubbing is cheap.
+      if (!mobile) {
+        gsap.utils.toArray<HTMLElement>(".service-media").forEach((media) => {
+          gsap.fromTo(
+            media,
+            { yPercent: -10 },
+            {
+              yPercent: 10,
+              ease: "none",
+              scrollTrigger: {
+                trigger: media,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true,
+              },
+            },
+          );
+        });
+      }
+
+      gsap.from(".service-index", {
+        textContent: 0,
+        duration: 1.2,
+        ease: "power1.out",
+        snap: { textContent: 1 },
+        stagger: 0.16,
+        scrollTrigger: { trigger: ".services-grid", start: "top 82%" },
+      });
+
       gsap.from(".service-card", {
         y: mobile ? 36 : 120,
         opacity: 0,
@@ -76,7 +106,7 @@ export default function Services() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-10 max-w-2xl md:mb-14">
-          <p className="text-xs uppercase tracking-[0.28em] text-cyan-electric">
+          <p className="text-xs uppercase tracking-[0.28em] text-volt">
             Core Services
           </p>
           <SplitReveal className="mt-3 text-[1.85rem] font-semibold tracking-tight text-zinc-50 sm:text-5xl">
@@ -85,23 +115,28 @@ export default function Services() {
         </div>
 
         <div className="services-grid grid gap-6 md:grid-cols-2">
-          {services.map((service) => {
+          {services.map((service, index) => {
             const Icon = service.icon;
             return (
               <TiltCard key={service.title} className="service-card rounded-[1.75rem]">
-                <article className="group relative overflow-hidden rounded-[1.75rem] border border-white/8 bg-slate-card/80">
+                <article className="group relative overflow-hidden rounded-[1.75rem] border border-white/8 bg-slate-card/80 transition-colors duration-500 hover:border-volt/30">
                   <div className="relative h-40 overflow-hidden sm:h-52">
-                    <Image
-                      src={service.image}
-                      alt={service.imageAlt}
-                      fill
-                      className="object-cover transition duration-700 group-hover:scale-110"
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                    />
+                    <div className="service-media absolute inset-x-0 -inset-y-[12%]">
+                      <Image
+                        src={service.image}
+                        alt={service.imageAlt}
+                        fill
+                        className="object-cover transition duration-700 [filter:hue-rotate(185deg)_saturate(0.9)] group-hover:scale-110"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                      />
+                    </div>
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-card via-slate-card/20 to-transparent" />
+                    <span className="absolute right-5 top-4 font-mono text-4xl font-bold text-white/15 transition-colors duration-500 group-hover:text-volt/60 sm:text-5xl">
+                      0<span className="service-index">{index + 1}</span>
+                    </span>
                   </div>
                   <div className="relative p-5 sm:p-7">
-                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-cyan-electric transition group-hover:scale-110 group-hover:shadow-[0_0_28px_rgba(34,211,238,0.35)]">
+                    <div className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-volt transition duration-500 group-hover:rotate-[360deg] group-hover:scale-110 group-hover:border-volt/40 group-hover:shadow-[0_0_28px_rgba(198,255,61,0.35)]">
                       <Icon className="h-5 w-5" />
                     </div>
                     <h3 className="text-xl font-semibold text-zinc-50">
@@ -118,7 +153,7 @@ export default function Services() {
         </div>
         <p className="mt-10 text-sm text-zinc-400">
           Need a stack-and-industry brief?{" "}
-          <Link href="/services" className="text-cyan-electric hover:underline">
+          <Link href="/services" className="text-volt hover:underline">
             Browse all 8,640 niche services by stack and vertical
           </Link>
           .

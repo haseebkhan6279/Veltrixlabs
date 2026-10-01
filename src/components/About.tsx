@@ -1,6 +1,8 @@
 "use client";
 
+import { useRef } from "react";
 import Image from "next/image";
+import { motion, useScroll, useTransform } from "motion/react";
 import { animated, useInView, useSpring, useTrail } from "@react-spring/web";
 import { Gauge, ShieldCheck, Workflow } from "lucide-react";
 
@@ -24,6 +26,13 @@ const pillars = [
 
 export default function About() {
   const [ref, inView] = useInView({ once: true, amount: 0.28 });
+  const frame = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: frame,
+    offset: ["start end", "end start"],
+  });
+  const imageY = useTransform(scrollYProgress, [0, 1], ["-8%", "8%"]);
+  const imageScale = useTransform(scrollYProgress, [0, 0.5, 1], [1.18, 1.08, 1.18]);
 
   const imageSpring = useSpring({
     opacity: inView ? 1 : 0,
@@ -49,18 +58,20 @@ export default function About() {
     <section id="about" className="relative scroll-mt-24 py-16 md:scroll-mt-28 md:py-32">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-12">
         <animated.div style={imageSpring} className="relative">
-          <div className="absolute -inset-4 rounded-[2.2rem] bg-gradient-to-br from-cyan-electric/25 to-purple-neon/25 blur-2xl" />
-          <div className="relative overflow-hidden rounded-[2rem] border border-white/10">
-            <Image
-              src="/images/about-studio.png"
-              alt="Veltrix Labs workspace"
-              width={1600}
-              height={1200}
-              className="h-56 w-full object-cover object-center sm:h-[420px] md:h-[520px]"
-            />
+          <div className="absolute -inset-4 rounded-[2.2rem] bg-gradient-to-br from-volt/25 via-sun/10 to-ember/25 blur-2xl" />
+          <div ref={frame} className="spin-border relative overflow-hidden rounded-[2rem] border border-white/10">
+            <motion.div style={{ y: imageY, scale: imageScale }}>
+              <Image
+                src="/images/about-studio.png"
+                alt="Veltrix Labs workspace"
+                width={1600}
+                height={1200}
+                className="h-56 w-full object-cover object-center sm:h-[420px] md:h-[520px]"
+              />
+            </motion.div>
             <div className="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-transparent to-transparent" />
             <div className="absolute bottom-4 left-4 right-4 glass rounded-2xl p-3 sm:bottom-5 sm:left-5 sm:right-5 sm:p-4">
-              <p className="text-xs uppercase tracking-[0.2em] text-cyan-electric">
+              <p className="text-xs uppercase tracking-[0.2em] text-volt">
                 Engineering ethos
               </p>
               <p className="mt-1 text-sm text-zinc-200">
@@ -72,7 +83,7 @@ export default function About() {
 
         <div ref={ref}>
           <animated.div style={copySpring}>
-            <p className="text-xs uppercase tracking-[0.28em] text-cyan-electric">
+            <p className="text-xs uppercase tracking-[0.28em] text-volt">
               About Veltrix
             </p>
             <h2 className="mt-3 text-[1.85rem] font-semibold tracking-tight text-zinc-50 sm:text-5xl">
@@ -99,9 +110,9 @@ export default function About() {
                     opacity: style.opacity,
                     transform: style.y.to((v) => `translateY(${v}px)`),
                   }}
-                  className="glass flex gap-3 rounded-2xl p-4 sm:gap-4 sm:p-5"
+                  className="glass group flex gap-3 rounded-2xl p-4 transition-colors duration-500 hover:border-volt/30 sm:gap-4 sm:p-5"
                 >
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-cyan-electric/20 to-purple-neon/20 text-cyan-electric">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-volt/20 to-ember/20 text-volt transition-transform duration-500 group-hover:-rotate-12 group-hover:scale-110">
                     <Icon className="h-5 w-5" />
                   </span>
                   <div>

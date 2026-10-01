@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isDashboardAuthed } from "@/lib/dashboard-auth";
 import {
   listQueries,
   parseContactQuery,
@@ -34,6 +35,10 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
+  if (!(await isDashboardAuthed())) {
+    return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     const queries = await listQueries();
     return NextResponse.json({

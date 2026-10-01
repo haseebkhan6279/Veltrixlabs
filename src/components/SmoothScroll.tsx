@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MotionConfig } from "motion/react";
 import "lenis/dist/lenis.css";
 
 export default function SmoothScroll({
@@ -13,6 +14,10 @@ export default function SmoothScroll({
 }) {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
+
+    // Native scrolling is smoother than JS easing on touch devices and is what
+    // reduced-motion users expect; Lenis only drives wheel scrolling.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
       duration: 1.15,
@@ -36,5 +41,5 @@ export default function SmoothScroll({
     };
   }, []);
 
-  return <>{children}</>;
+  return <MotionConfig reducedMotion="user">{children}</MotionConfig>;
 }

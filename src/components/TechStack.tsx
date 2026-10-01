@@ -60,7 +60,7 @@ export default function TechStack() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-10 text-center">
-          <p className="text-xs uppercase tracking-[0.28em] text-cyan-electric">
+          <p className="text-xs uppercase tracking-[0.28em] text-volt">
             Tech Stack &amp; Integrations
           </p>
           <h2 className="mt-3 text-[1.85rem] font-semibold tracking-tight text-zinc-50 sm:text-5xl">
@@ -88,9 +88,9 @@ export default function TechStack() {
             {doubled.map((tech, i) => (
               <span
                 key={`${tech}-${i}`}
-                className="orbit-dot inline-flex items-center gap-2 rounded-2xl border border-cyan-electric/20 bg-gradient-to-r from-cyan-electric/10 to-purple-neon/10 px-6 py-3 text-sm font-medium text-zinc-100"
+                className="orbit-dot inline-flex items-center gap-2 rounded-2xl border border-volt/20 bg-gradient-to-r from-volt/10 to-ember/10 px-6 py-3 text-sm font-medium text-zinc-100"
               >
-                <span className="h-1.5 w-1.5 rounded-full bg-cyan-electric" />
+                <span className="h-1.5 w-1.5 rounded-full bg-volt" />
                 {tech}
               </span>
             ))}

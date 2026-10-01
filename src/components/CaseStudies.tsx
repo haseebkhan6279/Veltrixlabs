@@ -59,11 +59,11 @@ export default function CaseStudies() {
 
   return (
     <section id="work" className="relative scroll-mt-24 overflow-hidden py-16 md:scroll-mt-28 md:py-32">
-      <div className="pointer-events-none absolute left-1/2 top-0 h-64 w-[70%] -translate-x-1/2 rounded-full bg-purple-neon/10 blur-[100px]" />
+      <div className="pointer-events-none absolute left-1/2 top-0 h-64 w-[70%] -translate-x-1/2 rounded-full bg-ember/10 blur-[100px]" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-8 flex flex-col justify-between gap-4 md:mb-10 md:flex-row md:items-end md:gap-6">
           <div>
-            <p className="text-xs uppercase tracking-[0.28em] text-purple-neon">
+            <p className="text-xs uppercase tracking-[0.28em] text-ember">
               Case Studies
             </p>
             <SplitReveal className="mt-3 max-w-xl text-[1.85rem] font-semibold tracking-tight text-zinc-50 sm:text-5xl">
@@ -90,12 +90,19 @@ export default function CaseStudies() {
                 role="tab"
                 aria-selected={active}
                 onClick={() => setFilter(item)}
-                className={`shrink-0 rounded-xl px-3.5 py-2.5 text-sm font-medium transition sm:px-4 ${
+                className={`relative isolate shrink-0 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors sm:px-4 ${
                   active
-                    ? "bg-gradient-to-r from-cyan-electric to-purple-neon text-obsidian shadow-[0_0_22px_rgba(34,211,238,0.28)]"
+                    ? "text-obsidian"
                     : "text-zinc-400 hover:bg-white/5 hover:text-zinc-100"
                 }`}
               >
+                {active ? (
+                  <motion.span
+                    layoutId="work-filter"
+                    className="absolute inset-0 -z-10 rounded-xl bg-gradient-to-r from-volt to-ember shadow-[0_0_22px_rgba(198,255,61,0.28)]"
+                    transition={{ type: "spring", stiffness: 420, damping: 34 }}
+                  />
+                ) : null}
                 {FILTER_LABEL[item]}
               </button>
             );
@@ -126,10 +133,10 @@ export default function CaseStudies() {
               aria-expanded={!showLoadMore}
               data-track="Load more projects"
               onClick={() => setVisibleCount((count) => count + PREVIEW_COUNT)}
-              className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 py-2 pl-6 pr-2 text-sm font-semibold text-zinc-100 transition hover:border-cyan-electric/40 hover:bg-white/10"
+              className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-white/5 py-2 pl-6 pr-2 text-sm font-semibold text-zinc-100 transition hover:border-volt/40 hover:bg-white/10"
             >
               Load more projects
-              <span className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-r from-cyan-electric to-purple-neon text-obsidian">
+              <span className="grid h-10 w-10 place-items-center rounded-full bg-gradient-to-r from-volt to-ember text-obsidian">
                 <ArrowDown className="h-4 w-4" />
               </span>
             </button>
@@ -195,7 +202,8 @@ function ProjectCard({
     <TiltCard
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
-      className="group relative overflow-hidden rounded-[1.6rem] border border-white/10 bg-charcoal"
+      data-cursor={project.video ? "Play" : "View"}
+      className="group relative overflow-hidden rounded-[1.6rem] border border-white/10 bg-charcoal hover:border-volt/30 hover:shadow-[0_30px_60px_-20px_rgba(198,255,61,0.18)]"
     >
       <div className="relative h-44 overflow-hidden sm:h-52">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -216,7 +224,7 @@ function ProjectCard({
           />
         ) : null}
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-black/10 to-transparent" />
-        <span className="absolute left-3 top-3 max-w-[58%] truncate rounded-full border border-white/15 bg-black/50 px-2.5 py-1 text-[11px] font-medium text-cyan-electric backdrop-blur sm:left-4 sm:top-4 sm:max-w-none sm:px-3">
+        <span className="absolute left-3 top-3 max-w-[58%] truncate rounded-full border border-white/15 bg-black/50 px-2.5 py-1 text-[11px] font-medium text-volt backdrop-blur sm:left-4 sm:top-4 sm:max-w-none sm:px-3">
           {badge}
         </span>
         <span className="absolute right-3 top-3 rounded-full border border-white/10 bg-black/40 px-2.5 py-1 text-[11px] text-zinc-200 backdrop-blur sm:right-4 sm:top-4 sm:px-3">
@@ -229,7 +237,7 @@ function ProjectCard({
             <h3 className="text-xl font-semibold text-zinc-50 md:text-2xl">
               {project.name}
             </h3>
-            <p className="mt-1 text-sm font-semibold leading-snug text-cyan-electric/95">
+            <p className="mt-1 text-sm font-semibold leading-snug text-volt/95">
               {project.outcome ?? project.tagline}
             </p>
           </div>
@@ -259,7 +267,7 @@ function ProjectCard({
             target="_blank"
             rel="noreferrer"
             data-track={`Opened ${project.name} dashboard`}
-            className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-cyan-electric to-purple-neon px-3.5 py-1.5 text-[12px] font-semibold text-obsidian"
+            className="mt-4 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-volt to-ember px-3.5 py-1.5 text-[12px] font-semibold text-obsidian"
           >
             Open dashboard
             <ArrowUpRight className="h-3.5 w-3.5" />
@@ -280,7 +288,7 @@ function ProjectCard({
               target="_blank"
               rel="noreferrer"
               data-track={`Opened ${project.name} website`}
-              className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[11px] font-medium text-zinc-100 transition hover:border-cyan-electric/40 hover:text-cyan-electric"
+              className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[11px] font-medium text-zinc-100 transition hover:border-volt/40 hover:text-volt"
             >
               Website
             </a>
@@ -291,7 +299,7 @@ function ProjectCard({
               target="_blank"
               rel="noreferrer"
               data-track={`Opened ${project.name} App Store`}
-              className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[11px] font-medium text-zinc-100 transition hover:border-cyan-electric/40 hover:text-cyan-electric"
+              className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[11px] font-medium text-zinc-100 transition hover:border-volt/40 hover:text-volt"
             >
               App Store
             </a>
@@ -302,7 +310,7 @@ function ProjectCard({
               target="_blank"
               rel="noreferrer"
               data-track={`Opened ${project.name} Play Store`}
-              className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[11px] font-medium text-zinc-100 transition hover:border-cyan-electric/40 hover:text-cyan-electric"
+              className="rounded-full border border-white/15 bg-white/10 px-2.5 py-1 text-[11px] font-medium text-zinc-100 transition hover:border-volt/40 hover:text-volt"
             >
               Play Store
             </a>

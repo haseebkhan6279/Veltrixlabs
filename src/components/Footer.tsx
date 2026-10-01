@@ -1,5 +1,6 @@
 import { ArrowUpRight, Mail, MapPin } from "lucide-react";
 import BrandLogo from "@/components/BrandLogo";
+import FooterWordmark from "@/components/FooterWordmark";
 import { NAV_LINKS } from "@/lib/constants";
 import { SITE_EMAIL, SITE_LOCATION, SITE_NAME, SITE_TAGLINE } from "@/lib/seo";
 import { TEAM } from "@/lib/team";
@@ -46,7 +47,7 @@ function FooterLink({ href, children }: { href: string; children: string }) {
       href={href}
       className="group inline-flex items-center gap-1 text-sm text-zinc-400 transition-colors hover:text-zinc-50"
     >
-      <span className="bg-gradient-to-r from-cyan-electric to-purple-neon bg-[length:0_1px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-300 group-hover:bg-[length:100%_1px]">
+      <span className="bg-gradient-to-r from-volt to-ember bg-[length:0_1px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-300 group-hover:bg-[length:100%_1px]">
         {children}
       </span>
     </a>
@@ -56,9 +57,9 @@ function FooterLink({ href, children }: { href: string; children: string }) {
 export default function Footer() {
   return (
     <footer className="relative overflow-hidden">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-electric/70 to-purple-neon/70" />
-      <div className="pointer-events-none absolute -left-32 top-10 h-72 w-72 rounded-full bg-cyan-electric/10 blur-[120px]" />
-      <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-purple-neon/10 blur-[130px]" />
+      <div className="shimmer-line pointer-events-none absolute inset-x-0 top-0 h-px bg-white/10" />
+      <div className="pointer-events-none absolute -left-32 top-10 h-72 w-72 rounded-full bg-volt/10 blur-[120px]" />
+      <div className="pointer-events-none absolute -right-24 bottom-0 h-80 w-80 rounded-full bg-ember/10 blur-[130px]" />
 
       <div className="relative mx-auto max-w-7xl px-4 pb-8 pt-16 sm:px-6 sm:pt-20 md:pt-24">
         <div className="grid gap-12 lg:grid-cols-[1.15fr_1.85fr] lg:gap-16">
@@ -83,7 +84,7 @@ export default function Footer() {
               team. Direct line for technical discovery:{" "}
               <a
                 href={`mailto:${SITE_EMAIL}`}
-                className="text-zinc-200 underline-offset-4 hover:text-cyan-electric hover:underline"
+                className="text-zinc-200 underline-offset-4 hover:text-volt hover:underline"
               >
                 {SITE_EMAIL}
               </a>
@@ -102,7 +103,7 @@ export default function Footer() {
                   key={social.label}
                   href={social.href}
                   aria-label={social.label}
-                  className="grid h-11 w-11 place-items-center rounded-full border border-white/10 text-zinc-400 transition hover:-translate-y-1 hover:border-cyan-electric/40 hover:text-cyan-electric"
+                  className="grid h-11 w-11 place-items-center rounded-full border border-white/10 text-zinc-400 transition duration-300 hover:-translate-y-1 hover:rotate-6 hover:bg-volt/10 hover:border-volt/40 hover:text-volt"
                 >
                   {social.icon}
                 </a>
@@ -112,7 +113,7 @@ export default function Footer() {
 
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-10">
             <div>
-              <p className="text-[11px] uppercase tracking-[0.22em] text-cyan-electric">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-volt">
                 Studio
               </p>
               <ul className="mt-4 flex flex-col gap-3">
@@ -125,7 +126,7 @@ export default function Footer() {
             </div>
 
             <div>
-              <p className="text-[11px] uppercase tracking-[0.22em] text-cyan-electric">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-volt">
                 Build
               </p>
               <ul className="mt-4 flex flex-col gap-3">
@@ -138,7 +139,7 @@ export default function Footer() {
             </div>
 
             <div className="col-span-2 sm:col-span-1">
-              <p className="text-[11px] uppercase tracking-[0.22em] text-cyan-electric">
+              <p className="text-[11px] uppercase tracking-[0.22em] text-volt">
                 Contact
               </p>
               <ul className="mt-4 flex flex-col gap-3 text-sm text-zinc-400">
@@ -147,7 +148,7 @@ export default function Footer() {
                     href={`mailto:${SITE_EMAIL}`}
                     className="inline-flex items-center gap-2 transition hover:text-zinc-50"
                   >
-                    <Mail className="h-3.5 w-3.5 text-cyan-electric" />
+                    <Mail className="h-3.5 w-3.5 text-volt" />
                     {SITE_EMAIL}
                   </a>
                 </li>
@@ -160,7 +161,7 @@ export default function Footer() {
                   </a>
                 </li>
                 <li className="inline-flex items-start gap-2">
-                  <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-cyan-electric" />
+                  <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-volt" />
                   <span>
                     {SITE_LOCATION}
                     <br />
@@ -168,8 +169,8 @@ export default function Footer() {
                   </span>
                 </li>
                 <li>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-cyan-electric/20 bg-cyan-electric/5 px-3 py-1 text-[11px] text-cyan-electric">
-                    <span className="h-1.5 w-1.5 rounded-full bg-cyan-electric shadow-[0_0_10px_#22d3ee]" />
+                  <span className="inline-flex items-center gap-2 rounded-full border border-volt/20 bg-volt/5 px-3 py-1 text-[11px] text-volt">
+                    <span className="h-1.5 w-1.5 rounded-full bg-volt shadow-[0_0_10px_#c6ff3d]" />
                     Booking new builds
                   </span>
                 </li>
@@ -178,7 +179,9 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col gap-3 border-t border-white/8 py-6 text-xs text-zinc-500 sm:mt-20 sm:flex-row sm:items-center sm:justify-between">
+        <FooterWordmark />
+
+        <div className="mt-8 flex flex-col gap-3 border-t border-white/8 pb-20 pt-6 text-xs text-zinc-500 sm:flex-row sm:pb-6 sm:items-center sm:justify-between">
           <p>
             © {new Date().getFullYear()} {SITE_NAME}. All rights reserved.
           </p>

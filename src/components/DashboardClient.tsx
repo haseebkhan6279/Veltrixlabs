@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Mail } from "lucide-react";
 
 type SessionAudit = {
@@ -62,25 +64,41 @@ const empty: Summary = {
 };
 
 export default function DashboardClient() {
+  const router = useRouter();
   const [data, setData] = useState<Summary>(empty);
   const [queries, setQueries] = useState<ContactQuery[]>([]);
   const [sessionFilter, setSessionFilter] = useState("all");
   const [openSession, setOpenSession] = useState<string | null>(null);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   useEffect(() => {
     let alive = true;
     const load = () => {
       void fetch("/api/analytics")
-        .then((res) => res.json())
-        .then((json: Summary) => {
-          if (alive) setData(json);
+        .then(async (res) => {
+          if (res.status === 401) {
+            router.refresh();
+            return null;
+          }
+          return res.json() as Promise<Summary>;
+        })
+        .then((json) => {
+          if (alive && json) setData(json);
         })
         .catch(() => undefined);
 
       void fetch("/api/contact")
-        .then((res) => res.json())
-        .then((json: { queries?: ContactQuery[] }) => {
-          if (alive) setQueries(Array.isArray(json.queries) ? json.queries : []);
+        .then(async (res) => {
+          if (res.status === 401) {
+            router.refresh();
+            return null;
+          }
+          return res.json() as Promise<{ queries?: ContactQuery[] }>;
+        })
+        .then((json) => {
+          if (alive && json) {
+            setQueries(Array.isArray(json.queries) ? json.queries : []);
+          }
         })
         .catch(() => undefined);
     };
@@ -90,7 +108,17 @@ export default function DashboardClient() {
       alive = false;
       window.clearInterval(id);
     };
-  }, []);
+  }, [router]);
+
+  const onLogout = async () => {
+    setLoggingOut(true);
+    try {
+      await fetch("/api/dashboard/logout", { method: "POST" });
+      router.refresh();
+    } finally {
+      setLoggingOut(false);
+    }
+  };
 
   const maxDay = Math.max(1, ...data.days.map((d) => d.count));
   const queriesToday = queries.filter((q) => {
@@ -121,7 +149,7 @@ export default function DashboardClient() {
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs uppercase tracking-[0.28em] text-cyan-electric">
+          <p className="text-xs uppercase tracking-[0.28em] text-volt">
             Analytics
           </p>
           <h1 className="mt-2 text-3xl font-semibold tracking-tight text-zinc-50 sm:text-4xl">
@@ -132,12 +160,22 @@ export default function DashboardClient() {
             sent a brief.
           </p>
         </div>
-        <a
-          href="/"
-          className="rounded-full border border-white/10 px-4 py-2 text-sm text-zinc-300 hover:border-cyan-electric/40 hover:text-cyan-electric"
-        >
-          Back to site
-        </a>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href="/"
+            className="rounded-full border border-white/10 px-4 py-2 text-sm text-zinc-300 hover:border-volt/40 hover:text-volt"
+          >
+            Back to site
+          </Link>
+          <button
+            type="button"
+            onClick={() => void onLogout()}
+            disabled={loggingOut}
+            className="rounded-full border border-white/10 px-4 py-2 text-sm text-zinc-300 hover:border-red-400/40 hover:text-red-300 disabled:opacity-60"
+          >
+            {loggingOut ? "Signing out…" : "Lock"}
+          </button>
+        </div>
       </div>
 
       {data.persist === "ephemeral" ? (
@@ -161,12 +199,14 @@ export default function DashboardClient() {
         <h2 className="text-sm font-semibold text-zinc-200">Last 14 days</h2>
         <div className="mt-6 flex h-40 items-end gap-2">
           {data.days.map((day) => (
-            <div key={day.label} className="flex flex-1 flex-col items-center gap-2">
-              <div
-                className="w-full rounded-t-md bg-gradient-to-t from-purple-neon to-cyan-electric"
-                style={{ height: `${Math.max(6, (day.count / maxDay) * 100)}%` }}
-                title={`${day.label}: ${day.count}`}
-              />
+            <div key={day.label} className="flex h-full flex-1 flex-col items-center gap-2">
+              <div className="flex w-full flex-1 items-end">
+                <div
+                  className="w-full rounded-t-md bg-gradient-to-t from-ember to-volt"
+                  style={{ height: `${day.count ? Math.max(4, (day.count / maxDay) * 100) : 0}%` }}
+                  title={`${day.label}: ${day.count}`}
+                />
+              </div>
               <span className="hidden text-[9px] text-zinc-500 sm:block">
                 {day.label.replace(/^[A-Za-z]+ /, "")}
               </span>
@@ -178,7 +218,7 @@ export default function DashboardClient() {
       <section className="mt-8 rounded-[1.6rem] border border-white/10 bg-slate-card p-5 sm:p-6">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.22em] text-cyan-electric">
+            <p className="text-xs uppercase tracking-[0.22em] text-volt">
               Sessions
             </p>
             <h2 className="mt-2 text-xl font-semibold text-zinc-50">
@@ -196,7 +236,7 @@ export default function DashboardClient() {
                 onClick={() => setSessionFilter(key)}
                 className={`rounded-full border px-3 py-1 text-[11px] capitalize transition ${
                   sessionFilter === key
-                    ? "border-cyan-electric/50 bg-cyan-electric/10 text-cyan-electric"
+                    ? "border-volt/50 bg-volt/10 text-volt"
                     : "border-white/10 text-zinc-400 hover:border-white/20 hover:text-zinc-200"
                 }`}
               >
@@ -220,7 +260,7 @@ export default function DashboardClient() {
                   key={session.id}
                   className={`rounded-2xl border px-4 py-3 sm:px-5 ${
                     session.contacted
-                      ? "border-cyan-electric/25 bg-cyan-electric/5"
+                      ? "border-volt/25 bg-volt/5"
                       : "border-white/8 bg-black/20"
                   }`}
                 >
@@ -243,7 +283,7 @@ export default function DashboardClient() {
                             : ""}
                         </span>
                         {session.contacted ? (
-                          <span className="rounded-full border border-cyan-electric/30 bg-cyan-electric/10 px-2 py-0.5 text-[11px] text-cyan-electric">
+                          <span className="rounded-full border border-volt/30 bg-volt/10 px-2 py-0.5 text-[11px] text-volt">
                             Sent brief
                           </span>
                         ) : null}
@@ -372,7 +412,7 @@ export default function DashboardClient() {
                 key={`${hit.t}-${i}`}
                 className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-white/8 px-3 py-2 text-sm"
               >
-                <span className="font-mono text-cyan-electric">{hit.path}</span>
+                <span className="font-mono text-volt">{hit.path}</span>
                 <span className="text-xs text-zinc-500">
                   {new Date(hit.t).toLocaleTimeString()} ·{" "}
                   {hit.source || hostOf(hit.referrer) || "direct"}
@@ -386,7 +426,7 @@ export default function DashboardClient() {
       <section id="queries" className="mt-10 scroll-mt-8">
         <div className="mb-5 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.28em] text-purple-neon">
+            <p className="text-xs uppercase tracking-[0.28em] text-ember">
               Queries
             </p>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight text-zinc-50 sm:text-3xl">
@@ -422,14 +462,14 @@ export default function DashboardClient() {
                     <p className="text-lg font-semibold text-zinc-50">{query.name}</p>
                     <a
                       href={`mailto:${query.email}`}
-                      className="mt-1 inline-flex items-center gap-1.5 text-sm text-cyan-electric hover:underline"
+                      className="mt-1 inline-flex items-center gap-1.5 text-sm text-volt hover:underline"
                     >
                       <Mail className="h-3.5 w-3.5" />
                       {query.email}
                     </a>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-full border border-cyan-electric/20 bg-cyan-electric/5 px-3 py-1 text-[11px] text-cyan-electric">
+                    <span className="rounded-full border border-volt/20 bg-volt/5 px-3 py-1 text-[11px] text-volt">
                       {query.type}
                     </span>
                     <span className="text-xs text-zinc-500">
@@ -471,7 +511,7 @@ function Row({ label, value }: { label: string; value: number }) {
   return (
     <div className="flex items-center justify-between gap-3 text-sm">
       <span className="truncate capitalize text-zinc-300">{label}</span>
-      <span className="font-mono text-cyan-electric">{value}</span>
+      <span className="font-mono text-volt">{value}</span>
     </div>
   );
 }

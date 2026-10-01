@@ -22,8 +22,8 @@ function Mark({ box }: { box: number }) {
               y2="12"
               gradientUnits="userSpaceOnUse"
             >
-              <stop offset="0.5" stopColor="#22D3EE" />
-              <stop offset="0.5" stopColor="#A855F7" />
+              <stop offset="0.5" stopColor="#c6ff3d" />
+              <stop offset="0.5" stopColor="#ff6a3d" />
             </linearGradient>
           </defs>
           <path
@@ -49,7 +49,7 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: 72,
-          background: "#09090b",
+          background: "#0a0a09",
           color: "#fafafa",
           fontFamily: "sans-serif",
         }}
@@ -81,7 +81,7 @@ export default function OpenGraphImage() {
           >
             From Concept to Production-Grade Software in Weeks.
           </div>
-          <div style={{ fontSize: 24, color: "#22d3ee", fontWeight: 600 }}>
+          <div style={{ fontSize: 24, color: "#c6ff3d", fontWeight: 600 }}>
             Web · Mobile · SaaS · Shopify · AI Automation
           </div>
         </div>

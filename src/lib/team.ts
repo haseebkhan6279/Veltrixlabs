@@ -26,7 +26,7 @@ export const TEAM: readonly TeamMember[] = [
     phone: "+92 324 049 7250",
     linkedIn: "https://www.linkedin.com/in/haseebgulraizkhan",
     github: "https://github.com/haseebkhan6279",
-    accent: "from-cyan-electric to-indigo-400",
+    accent: "from-volt to-sun",
   },
   {
     name: "Hamza Azeem",
@@ -48,6 +48,6 @@ export const TEAM: readonly TeamMember[] = [
     email: "70125186@student.uol.edu.pk",
     phone: "+92 371 0726646",
     linkedIn: "https://www.linkedin.com/in/hamzaazeemdeveloper",
-    accent: "from-purple-neon to-fuchsia-400",
+    accent: "from-ember to-sun",
   },
 ];

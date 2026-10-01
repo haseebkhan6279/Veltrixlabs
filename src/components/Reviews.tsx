@@ -33,13 +33,13 @@ export default function Reviews() {
       id="reviews"
       className="relative scroll-mt-24 overflow-hidden py-16 md:scroll-mt-28 md:py-32"
     >
-      <div className="pointer-events-none absolute left-[-18%] top-0 h-80 w-80 rounded-full bg-cyan-electric/15 blur-[120px]" />
-      <div className="pointer-events-none absolute right-[-12%] bottom-10 h-72 w-72 rounded-full bg-purple-neon/18 blur-[120px]" />
+      <div className="pointer-events-none absolute left-[-18%] top-0 h-80 w-80 rounded-full bg-volt/15 blur-[120px]" />
+      <div className="pointer-events-none absolute right-[-12%] bottom-10 h-72 w-72 rounded-full bg-ember/18 blur-[120px]" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-8 flex flex-col justify-between gap-4 md:mb-10 md:flex-row md:items-end">
           <div className="max-w-2xl">
-            <p className="text-xs uppercase tracking-[0.28em] text-cyan-electric">
+            <p className="text-xs uppercase tracking-[0.28em] text-volt">
               Client reviews
             </p>
             <SplitReveal className="mt-3 text-[1.85rem] font-semibold tracking-tight text-zinc-50 sm:text-5xl">
@@ -53,7 +53,7 @@ export default function Reviews() {
         </div>
 
         <div className="relative mx-auto mb-8 max-w-3xl text-center md:mb-12">
-          <Quote className="mx-auto h-8 w-8 text-cyan-electric/70" />
+          <Quote className="mx-auto h-8 w-8 text-volt/70" />
           <AnimatePresence mode="wait">
             <motion.p
               key={current.name}
@@ -83,14 +83,14 @@ export default function Reviews() {
       <div className="relative">
         <button
           type="button"
-          className="reviews-prev absolute left-2 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/10 bg-black/50 text-cyan-electric backdrop-blur md:grid lg:left-8"
+          className="reviews-prev absolute left-2 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/10 bg-black/50 text-volt backdrop-blur md:grid lg:left-8"
           aria-label="Previous review"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
         <button
           type="button"
-          className="reviews-next absolute right-2 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/10 bg-black/50 text-cyan-electric backdrop-blur md:grid lg:right-8"
+          className="reviews-next absolute right-2 top-1/2 z-20 hidden h-11 w-11 -translate-y-1/2 place-items-center rounded-full border border-white/10 bg-black/50 text-volt backdrop-blur md:grid lg:right-8"
           aria-label="Next review"
         >
           <ChevronRight className="h-5 w-5" />
@@ -151,7 +151,7 @@ export default function Reviews() {
               className="text-[11px] uppercase tracking-[0.28em] text-zinc-500"
             >
               {product}
-              <span className="ml-8 text-cyan-electric/50">✦</span>
+              <span className="ml-8 text-volt/50">✦</span>
             </span>
           ))}
         </div>
@@ -164,16 +164,16 @@ function ReviewCard({ review }: { review: Review }) {
   return (
     <article className="review-card flex h-full min-h-[280px] flex-col rounded-[1.7rem] border border-white/10 bg-gradient-to-br from-white/[0.07] to-black/40 p-6 backdrop-blur-md">
       <div className="flex items-center justify-between">
-        <div className="flex gap-0.5 text-cyan-electric" aria-label="5 out of 5 stars">
+        <div className="flex gap-0.5 text-volt" aria-label="5 out of 5 stars">
           {Array.from({ length: review.rating }).map((_, index) => (
             <Star
               key={index}
-              className="h-4 w-4 fill-cyan-electric motion-safe:animate-pulse"
+              className="h-4 w-4 fill-volt motion-safe:animate-pulse"
               style={{ animationDelay: `${index * 80}ms` }}
             />
           ))}
         </div>
-        <span className="rounded-full border border-cyan-electric/25 bg-cyan-electric/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-cyan-electric">
+        <span className="rounded-full border border-volt/25 bg-volt/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-volt">
           {review.product}
         </span>
       </div>
@@ -181,7 +181,7 @@ function ReviewCard({ review }: { review: Review }) {
         “{review.quote}”
       </p>
       <div className="mt-6 flex items-center gap-3 border-t border-white/8 pt-4">
-        <span className="grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br from-cyan-electric to-purple-neon text-xs font-bold text-obsidian">
+        <span className="grid h-11 w-11 place-items-center rounded-full bg-gradient-to-br from-volt to-ember text-xs font-bold text-obsidian">
           {initials(review.name)}
         </span>
         <div>

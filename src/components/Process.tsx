@@ -1,7 +1,10 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Image from "next/image";
-import { Lottie } from "lottie-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Lottie, LottieInteractions, lottieInView } from "lottie-react";
 import SplitReveal from "@/components/SplitReveal";
 import { IMAGES } from "@/lib/constants";
 import blueprint from "../../public/lottie/blueprint.json";
@@ -35,15 +38,72 @@ const steps = [
   },
 ];
 
+// Each icon plays once, when its card is actually on screen.
+const PLAY_IN_VIEW = [lottieInView({ once: true, amount: 0.6 })];
+
 export default function Process() {
+  const root = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+    const node = root.current;
+    if (!node) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray<HTMLElement>(".process-card");
+
+      cards.forEach((card) => {
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top 80%",
+          once: true,
+          onEnter: () => {
+            card.classList.add("is-live");
+          },
+        });
+      });
+
+      if (reduced) return;
+
+      gsap.from(cards, {
+        y: 70,
+        opacity: 0,
+        duration: 1,
+        stagger: 0.18,
+        ease: "power3.out",
+        scrollTrigger: { trigger: ".process-grid", start: "top 80%" },
+      });
+
+      gsap.fromTo(
+        ".process-line",
+        { scaleX: 0, scaleY: 0 },
+        {
+          scaleX: 1,
+          scaleY: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".process-grid",
+            start: "top 75%",
+            end: "bottom 60%",
+            scrub: 0.5,
+          },
+        },
+      );
+    }, node);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
       id="process"
+      ref={root}
       className="relative isolate z-10 scroll-mt-24 overflow-hidden bg-obsidian py-16 md:scroll-mt-28 md:py-32"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-8 max-w-2xl md:mb-12">
-          <p className="text-xs uppercase tracking-[0.28em] text-purple-neon">
+          <p className="text-xs uppercase tracking-[0.28em] text-ember">
             3-Step Process
           </p>
           <SplitReveal className="mt-3 text-[1.85rem] font-semibold tracking-tight text-zinc-50 sm:text-5xl">
@@ -51,11 +111,19 @@ export default function Process() {
           </SplitReveal>
         </div>
 
-        <div className="grid gap-6 lg:grid-cols-3">
+        <div className="process-grid relative grid gap-6 lg:grid-cols-3">
+          {/* Connector: vertical on stacked layouts, horizontal on desktop. */}
+          <div className="pointer-events-none absolute bottom-6 left-7 top-6 w-px bg-white/8 lg:hidden">
+            <div className="process-line h-full w-full origin-top bg-gradient-to-b from-volt via-sun to-ember" />
+          </div>
+          <div className="pointer-events-none absolute left-[8%] right-[8%] top-[11.75rem] hidden h-px bg-white/8 lg:block">
+            <div className="process-line h-full w-full origin-left bg-gradient-to-r from-volt via-sun to-ember" />
+          </div>
+
           {steps.map((item) => (
             <article
               key={item.step}
-              className="group relative overflow-hidden rounded-[1.8rem] border border-white/8 bg-slate-card"
+              className="process-card group relative overflow-hidden rounded-[1.8rem] border border-white/8 bg-slate-card transition-colors duration-500 hover:border-volt/30"
             >
               <div className="relative h-44">
                 <Image
@@ -67,16 +135,21 @@ export default function Process() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-card to-transparent" />
                 <div className="absolute bottom-4 right-4 h-14 w-14 overflow-hidden rounded-2xl border border-white/10 bg-obsidian/80 p-1 backdrop-blur">
-                  <Lottie
-                    src={item.animation}
-                    loop={false}
-                    autoplay
-                    className="h-full w-full"
-                  />
+                  <LottieInteractions interactions={PLAY_IN_VIEW}>
+                    <Lottie
+                      src={item.animation}
+                      loop={false}
+                      autoplay={false}
+                      className="h-full w-full"
+                    />
+                  </LottieInteractions>
                 </div>
               </div>
               <div className="p-6 sm:p-7">
-                <p className="font-mono text-sm text-cyan-electric">{item.step}</p>
+                <p className="process-step inline-flex items-center gap-2 font-mono text-sm text-volt">
+                  <span className="process-dot h-2 w-2 rounded-full bg-white/20 transition-all duration-700" />
+                  {item.step}
+                </p>
                 <h3 className="mt-2 text-xl font-semibold text-zinc-50">
                   {item.title}
                 </h3>

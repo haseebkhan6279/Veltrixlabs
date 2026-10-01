@@ -13,6 +13,29 @@ export default function AnalyticsTracker() {
     if (window.location.hash) {
       trackEvent({ type: "section", hash: window.location.hash });
     }
+
+    // Record how far visitors scroll: each section once per page view.
+    const seen = new Set<string>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const id = (entry.target as HTMLElement).id;
+          if (!entry.isIntersecting || seen.has(id)) continue;
+          seen.add(id);
+          trackEvent({ type: "section", hash: `#${id}`, action: "view" });
+        }
+      },
+      { rootMargin: "-45% 0px -45% 0px" },
+    );
+    const timer = window.setTimeout(() => {
+      document
+        .querySelectorAll<HTMLElement>("main section[id]")
+        .forEach((node) => observer.observe(node));
+    }, 1500);
+    return () => {
+      window.clearTimeout(timer);
+      observer.disconnect();
+    };
   }, [pathname]);
 
   useEffect(() => {

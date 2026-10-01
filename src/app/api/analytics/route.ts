@@ -4,6 +4,7 @@ import {
   recordEvent,
   type EventType,
 } from "@/lib/analytics";
+import { isDashboardAuthed } from "@/lib/dashboard-auth";
 import { classifySource } from "@/lib/traffic";
 
 export const runtime = "nodejs";
@@ -79,6 +80,10 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
+  if (!(await isDashboardAuthed())) {
+    return NextResponse.json({ ok: false, error: "Unauthorized" }, { status: 401 });
+  }
+
   try {
     return NextResponse.json(await getAnalyticsSummary());
   } catch (error) {

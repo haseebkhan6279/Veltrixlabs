@@ -13,7 +13,7 @@ export default function AppleIcon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "#09090b",
+          background: "#0a0a09",
         }}
       >
         <svg width="140" height="140" viewBox="0 0 64 64" fill="none">
@@ -26,8 +26,8 @@ export default function AppleIcon() {
               y2="12"
               gradientUnits="userSpaceOnUse"
             >
-              <stop offset="0.5" stopColor="#22D3EE" />
-              <stop offset="0.5" stopColor="#A855F7" />
+              <stop offset="0.5" stopColor="#c6ff3d" />
+              <stop offset="0.5" stopColor="#ff6a3d" />
             </linearGradient>
           </defs>
           <path

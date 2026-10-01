@@ -131,7 +131,12 @@ function buildSessions(events: AnalyticsEvent[]): SessionAudit[] {
       pages: uniquePages,
       journey,
       actions,
-      contacted: ordered.some((event) => eventType(event) === "contact"),
+      contacted: ordered.some(
+        (event) =>
+          eventType(event) === "contact" ||
+          (eventType(event) === "click" &&
+            /^(mailto:|https:\/\/wa\.me\/)/.test(event.href ?? "")),
+      ),
     });
   }
 
