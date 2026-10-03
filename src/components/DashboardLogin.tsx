@@ -41,7 +41,7 @@ export default function DashboardLogin({
   return (
     <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center px-4 py-16 sm:px-6">
       <div className="rounded-[1.6rem] border border-white/10 bg-slate-card p-6 sm:p-8">
-        <div className="flex h-11 w-11 items-center justify-center rounded-full border border-volt/20 bg-volt/10 text-volt">
+        <div className="flex h-11 w-11 items-center justify-center rounded-full border border-cyan-electric/20 bg-cyan-electric/10 text-cyan-electric">
           <Lock className="h-5 w-5" />
         </div>
         <h1 className="mt-5 text-2xl font-semibold tracking-tight text-zinc-50">
@@ -69,7 +69,7 @@ export default function DashboardLogin({
                 required
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-zinc-50 outline-none transition focus:border-volt/60"
+                className="w-full rounded-xl border border-white/10 bg-black/30 px-4 py-3 text-zinc-50 outline-none transition focus:border-cyan-electric/60"
               />
             </label>
             {error ? <p className="text-sm text-red-400">{error}</p> : null}

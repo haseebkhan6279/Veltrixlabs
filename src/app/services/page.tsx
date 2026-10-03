@@ -41,7 +41,7 @@ export default function ServicesIndexPage() {
     <main id="top" className="min-h-screen bg-obsidian">
       <Navbar />
       <div className="mx-auto max-w-7xl px-4 pb-20 pt-28 sm:px-6">
-        <p className="text-xs uppercase tracking-[0.28em] text-volt">
+        <p className="text-xs uppercase tracking-[0.28em] text-cyan-electric">
           Services
         </p>
         <h1 className="mt-3 max-w-3xl text-[1.85rem] font-semibold tracking-tight text-zinc-50 sm:text-5xl">
@@ -60,7 +60,7 @@ export default function ServicesIndexPage() {
             <a
               key={tech.name}
               href={`#${techAnchor(tech.name)}`}
-              className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-300 hover:border-volt/40 hover:text-volt"
+              className="rounded-full border border-white/10 px-3 py-1 text-xs text-zinc-300 hover:border-cyan-electric/40 hover:text-cyan-electric"
             >
               {tech.name}
             </a>
@@ -81,7 +81,7 @@ export default function ServicesIndexPage() {
                     key={`${tech.name}-${industry}`}
                     className="rounded-2xl border border-white/10 bg-slate-card p-4"
                   >
-                    <h3 className="text-sm font-semibold text-volt">
+                    <h3 className="text-sm font-semibold text-cyan-electric">
                       {industry}
                     </h3>
                     <ul className="mt-3 flex flex-wrap gap-x-3 gap-y-2">
@@ -96,7 +96,7 @@ export default function ServicesIndexPage() {
                           <li key={slug}>
                             <a
                               href={`/services/${slug}`}
-                              className="text-xs text-zinc-400 hover:text-volt"
+                              className="text-xs text-zinc-400 hover:text-cyan-electric"
                             >
                               {service.name}
                             </a>

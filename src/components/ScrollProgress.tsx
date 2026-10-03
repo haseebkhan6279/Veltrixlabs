@@ -31,7 +31,7 @@ export default function ScrollProgress() {
     <div className="pointer-events-none fixed inset-x-0 top-0 z-[70] h-[2px] origin-left bg-transparent">
       <div
         ref={bar}
-        className="h-full origin-left bg-gradient-to-r from-volt via-sun to-ember"
+        className="h-full origin-left bg-gradient-to-r from-cyan-electric via-indigo-glow to-purple-neon"
       />
     </div>
   );

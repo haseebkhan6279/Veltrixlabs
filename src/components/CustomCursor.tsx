@@ -70,7 +70,7 @@ export default function CustomCursor() {
       <div
         ref={ring}
         style={{ transform: "translate3d(-100px, -100px, 0)" }}
-        className="cursor-ring absolute grid h-9 w-9 place-items-center rounded-full border border-volt/60 shadow-[0_0_24px_rgba(198,255,61,0.25)] transition-[background-color,border-color] duration-300"
+        className="cursor-ring absolute grid h-9 w-9 place-items-center rounded-full border border-cyan-electric/60 shadow-[0_0_24px_rgba(34,211,238,0.25)] transition-[background-color,border-color] duration-300"
       >
         <span
           ref={label}
@@ -80,7 +80,7 @@ export default function CustomCursor() {
       <div
         ref={dot}
         style={{ transform: "translate3d(-100px, -100px, 0)" }}
-        className="absolute h-1.5 w-1.5 rounded-full bg-volt transition-opacity duration-200"
+        className="absolute h-1.5 w-1.5 rounded-full bg-cyan-electric transition-opacity duration-200"
       />
     </div>
   );

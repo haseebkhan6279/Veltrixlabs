@@ -32,7 +32,7 @@ const inter = Inter({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a09",
+  themeColor: "#09090b",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
@@ -104,7 +104,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: introScript }} />
         <a
           href="#top"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-volt focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-obsidian"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-cyan-electric focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-obsidian"
         >
           Skip to content
         </a>

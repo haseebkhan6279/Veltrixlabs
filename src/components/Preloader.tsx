@@ -100,8 +100,8 @@ export default function Preloader() {
         <svg viewBox="0 0 64 64" className="h-16 w-16" fill="none">
           <defs>
             <linearGradient id="preloader-v" x1="16" y1="12" x2="48" y2="12" gradientUnits="userSpaceOnUse">
-              <stop offset="0.5" stopColor="#c6ff3d" />
-              <stop offset="0.5" stopColor="#ff6a3d" />
+              <stop offset="0.5" stopColor="#22d3ee" />
+              <stop offset="0.5" stopColor="#a855f7" />
             </linearGradient>
           </defs>
           <path
@@ -124,7 +124,7 @@ export default function Preloader() {
           <div className="h-px w-full overflow-hidden bg-white/10">
             <div
               data-bar
-              className="h-full origin-left scale-x-0 bg-gradient-to-r from-volt via-sun to-ember"
+              className="h-full origin-left scale-x-0 bg-gradient-to-r from-cyan-electric via-indigo-glow to-purple-neon"
             />
           </div>
           <p className="mt-3 text-right font-mono text-xs text-zinc-500">

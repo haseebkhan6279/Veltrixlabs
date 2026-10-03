@@ -61,7 +61,7 @@ export default function VelocityMarquee({
                 }`}
               >
                 {item}
-                <span className="mx-5 inline-block h-3 w-3 rotate-45 bg-gradient-to-br from-volt to-ember sm:mx-8 sm:h-4 sm:w-4" />
+                <span className="mx-5 inline-block h-3 w-3 rotate-45 bg-gradient-to-br from-cyan-electric to-purple-neon sm:mx-8 sm:h-4 sm:w-4" />
               </span>
             ))}
           </span>

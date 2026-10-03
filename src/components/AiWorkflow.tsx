@@ -90,10 +90,10 @@ export default function AiWorkflow() {
 
   return (
     <section id="ai" ref={root} className="relative scroll-mt-24 overflow-hidden py-16 md:scroll-mt-28 md:py-28">
-      <div className="aurora-blob pointer-events-none absolute right-[-10%] top-10 h-72 w-72 rounded-full [--blob:rgba(255,106,61,0.26)]" />
+      <div className="aurora-blob pointer-events-none absolute right-[-10%] top-10 h-72 w-72 rounded-full [--blob:rgba(168,85,247,0.26)]" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-10 max-w-2xl md:mb-14">
-          <p className="text-xs uppercase tracking-[0.28em] text-volt">
+          <p className="text-xs uppercase tracking-[0.28em] text-cyan-electric">
             AI operations
           </p>
           <SplitReveal className="mt-3 text-[1.85rem] font-semibold tracking-tight text-zinc-50 sm:text-5xl">
@@ -117,16 +117,16 @@ export default function AiWorkflow() {
                   onMouseEnter={() => setActive(index)}
                   className={`flow-step relative overflow-hidden rounded-2xl border p-5 transition-[border-color,background-color,box-shadow] duration-500 ${
                     on
-                      ? "border-volt/40 bg-volt/[0.06] shadow-[0_0_40px_rgba(198,255,61,0.12)]"
+                      ? "border-cyan-electric/40 bg-cyan-electric/[0.06] shadow-[0_0_40px_rgba(34,211,238,0.12)]"
                       : "border-white/10 bg-white/[0.03]"
                   }`}
                 >
-                  <div className="mb-3 flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-volt">
+                  <div className="mb-3 flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-cyan-electric">
                     <span
                       className={`grid h-8 w-8 place-items-center rounded-full border transition-all duration-500 ${
                         on
-                          ? "scale-110 border-volt/50 bg-volt text-obsidian"
-                          : "border-white/10 bg-black/40 text-volt"
+                          ? "scale-110 border-cyan-electric/50 bg-cyan-electric text-obsidian"
+                          : "border-white/10 bg-black/40 text-cyan-electric"
                       }`}
                     >
                       <Icon className="h-4 w-4" />
@@ -139,7 +139,7 @@ export default function AiWorkflow() {
                     {on && inView ? (
                       <span
                         key={active}
-                        className="flow-progress block h-full origin-left bg-gradient-to-r from-volt to-ember"
+                        className="flow-progress block h-full origin-left bg-gradient-to-r from-cyan-electric to-purple-neon"
                         style={{ animationDuration: `${STEP_MS}ms` }}
                       />
                     ) : null}
@@ -161,8 +161,8 @@ export default function AiWorkflow() {
             <div className="border-t border-white/8 px-5 py-4">
               <p className="flex items-center gap-2 text-sm font-semibold text-zinc-100">
                 <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ember opacity-75 motion-reduce:animate-none" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-ember" />
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-purple-neon opacity-75 motion-reduce:animate-none" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-purple-neon" />
                 </span>
                 Zallo.ai pipeline
               </p>

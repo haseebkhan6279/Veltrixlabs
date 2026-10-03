@@ -58,7 +58,7 @@ export default function About() {
     <section id="about" className="relative scroll-mt-24 py-16 md:scroll-mt-28 md:py-32">
       <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-12">
         <animated.div style={imageSpring} className="relative">
-          <div className="absolute -inset-4 rounded-[2.2rem] bg-gradient-to-br from-volt/25 via-sun/10 to-ember/25 blur-2xl" />
+          <div className="absolute -inset-4 rounded-[2.2rem] bg-gradient-to-br from-cyan-electric/25 via-indigo-glow/10 to-purple-neon/25 blur-2xl" />
           <div ref={frame} className="spin-border relative overflow-hidden rounded-[2rem] border border-white/10">
             <motion.div style={{ y: imageY, scale: imageScale }}>
               <Image
@@ -71,7 +71,7 @@ export default function About() {
             </motion.div>
             <div className="absolute inset-0 bg-gradient-to-t from-obsidian/80 via-transparent to-transparent" />
             <div className="absolute bottom-4 left-4 right-4 glass rounded-2xl p-3 sm:bottom-5 sm:left-5 sm:right-5 sm:p-4">
-              <p className="text-xs uppercase tracking-[0.2em] text-volt">
+              <p className="text-xs uppercase tracking-[0.2em] text-cyan-electric">
                 Engineering ethos
               </p>
               <p className="mt-1 text-sm text-zinc-200">
@@ -83,7 +83,7 @@ export default function About() {
 
         <div ref={ref}>
           <animated.div style={copySpring}>
-            <p className="text-xs uppercase tracking-[0.28em] text-volt">
+            <p className="text-xs uppercase tracking-[0.28em] text-cyan-electric">
               About Veltrix
             </p>
             <h2 className="mt-3 text-[1.85rem] font-semibold tracking-tight text-zinc-50 sm:text-5xl">
@@ -110,9 +110,9 @@ export default function About() {
                     opacity: style.opacity,
                     transform: style.y.to((v) => `translateY(${v}px)`),
                   }}
-                  className="glass group flex gap-3 rounded-2xl p-4 transition-colors duration-500 hover:border-volt/30 sm:gap-4 sm:p-5"
+                  className="glass group flex gap-3 rounded-2xl p-4 transition-colors duration-500 hover:border-cyan-electric/30 sm:gap-4 sm:p-5"
                 >
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-volt/20 to-ember/20 text-volt transition-transform duration-500 group-hover:-rotate-12 group-hover:scale-110">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-cyan-electric/20 to-purple-neon/20 text-cyan-electric transition-transform duration-500 group-hover:-rotate-12 group-hover:scale-110">
                     <Icon className="h-5 w-5" />
                   </span>
                   <div>

@@ -103,7 +103,7 @@ export default function Process() {
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mb-8 max-w-2xl md:mb-12">
-          <p className="text-xs uppercase tracking-[0.28em] text-ember">
+          <p className="text-xs uppercase tracking-[0.28em] text-purple-neon">
             3-Step Process
           </p>
           <SplitReveal className="mt-3 text-[1.85rem] font-semibold tracking-tight text-zinc-50 sm:text-5xl">
@@ -114,16 +114,16 @@ export default function Process() {
         <div className="process-grid relative grid gap-6 lg:grid-cols-3">
           {/* Connector: vertical on stacked layouts, horizontal on desktop. */}
           <div className="pointer-events-none absolute bottom-6 left-7 top-6 w-px bg-white/8 lg:hidden">
-            <div className="process-line h-full w-full origin-top bg-gradient-to-b from-volt via-sun to-ember" />
+            <div className="process-line h-full w-full origin-top bg-gradient-to-b from-cyan-electric via-indigo-glow to-purple-neon" />
           </div>
           <div className="pointer-events-none absolute left-[8%] right-[8%] top-[11.75rem] hidden h-px bg-white/8 lg:block">
-            <div className="process-line h-full w-full origin-left bg-gradient-to-r from-volt via-sun to-ember" />
+            <div className="process-line h-full w-full origin-left bg-gradient-to-r from-cyan-electric via-indigo-glow to-purple-neon" />
           </div>
 
           {steps.map((item) => (
             <article
               key={item.step}
-              className="process-card group relative overflow-hidden rounded-[1.8rem] border border-white/8 bg-slate-card transition-colors duration-500 hover:border-volt/30"
+              className="process-card group relative overflow-hidden rounded-[1.8rem] border border-white/8 bg-slate-card transition-colors duration-500 hover:border-cyan-electric/30"
             >
               <div className="relative h-44">
                 <Image
@@ -146,7 +146,7 @@ export default function Process() {
                 </div>
               </div>
               <div className="p-6 sm:p-7">
-                <p className="process-step inline-flex items-center gap-2 font-mono text-sm text-volt">
+                <p className="process-step inline-flex items-center gap-2 font-mono text-sm text-cyan-electric">
                   <span className="process-dot h-2 w-2 rounded-full bg-white/20 transition-all duration-700" />
                   {item.step}
                 </p>

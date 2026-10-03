@@ -74,7 +74,7 @@ export default async function ServiceLandingPage({ params }: Props) {
       <Navbar />
       <article className="mx-auto max-w-4xl px-4 pb-20 pt-28 sm:px-6">
         <nav className="flex flex-wrap items-center gap-2 text-sm text-zinc-500">
-          <Link href="/services" className="text-volt hover:underline">
+          <Link href="/services" className="text-cyan-electric hover:underline">
             Services
           </Link>
           <span aria-hidden>/</span>
@@ -83,7 +83,7 @@ export default async function ServiceLandingPage({ params }: Props) {
           <span>{page.industry}</span>
         </nav>
 
-        <p className="mt-6 text-[11px] uppercase tracking-[0.18em] text-volt">
+        <p className="mt-6 text-[11px] uppercase tracking-[0.18em] text-cyan-electric">
           {page.tech} · {page.service} · {page.audience}
         </p>
         <h1 className="mt-3 text-[1.85rem] font-semibold tracking-tight text-zinc-50 sm:text-5xl">
@@ -136,7 +136,7 @@ export default async function ServiceLandingPage({ params }: Props) {
             {page.deliverables.map((item) => (
               <p
                 key={item}
-                className="rounded-2xl border border-volt/15 bg-volt/5 px-4 py-3 text-sm text-zinc-200"
+                className="rounded-2xl border border-cyan-electric/15 bg-cyan-electric/5 px-4 py-3 text-sm text-zinc-200"
               >
                 {item}
               </p>
@@ -149,7 +149,7 @@ export default async function ServiceLandingPage({ params }: Props) {
           <ul className="mt-5 space-y-3 text-zinc-300">
             {page.outcomes.map((item) => (
               <li key={item} className="flex gap-3 text-sm leading-relaxed">
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-volt" />
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-electric" />
                 {item}
               </li>
             ))}
@@ -167,9 +167,9 @@ export default async function ServiceLandingPage({ params }: Props) {
                 <a
                   key={project.slug}
                   href={project.url ?? "/#work"}
-                  className="rounded-2xl border border-white/10 bg-slate-card p-4 transition hover:border-volt/40"
+                  className="rounded-2xl border border-white/10 bg-slate-card p-4 transition hover:border-cyan-electric/40"
                 >
-                  <p className="text-[11px] uppercase tracking-[0.16em] text-volt">
+                  <p className="text-[11px] uppercase tracking-[0.16em] text-cyan-electric">
                     {project.category}
                   </p>
                   <p className="mt-2 font-semibold text-zinc-50">{project.name}</p>
@@ -188,7 +188,7 @@ export default async function ServiceLandingPage({ params }: Props) {
                 <li key={item.slug}>
                   <Link
                     href={item.path}
-                    className="text-sm text-zinc-300 transition hover:text-volt"
+                    className="text-sm text-zinc-300 transition hover:text-cyan-electric"
                   >
                     {item.title}
                   </Link>
@@ -199,7 +199,7 @@ export default async function ServiceLandingPage({ params }: Props) {
         )}
 
         <section className="mt-16 rounded-[1.75rem] border border-white/10 bg-slate-card p-6 sm:p-8">
-          <p className="text-[11px] uppercase tracking-[0.18em] text-volt">
+          <p className="text-[11px] uppercase tracking-[0.18em] text-cyan-electric">
             Next step
           </p>
           <h2 className="mt-3 text-2xl font-semibold text-zinc-50">{audience.cta}</h2>
@@ -209,7 +209,7 @@ export default async function ServiceLandingPage({ params }: Props) {
           <Link
             href="/#contact"
             data-track="Service page start project"
-            className="mt-6 inline-flex rounded-full bg-gradient-to-r from-volt to-ember px-5 py-2.5 text-sm font-semibold text-obsidian"
+            className="mt-6 inline-flex rounded-full bg-gradient-to-r from-cyan-electric to-purple-neon px-5 py-2.5 text-sm font-semibold text-obsidian"
           >
             Start a project
           </Link>

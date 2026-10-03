@@ -137,8 +137,8 @@ export default function Navbar() {
             transition={{ duration: 0.6, ease }}
             className="fixed inset-0 z-40 overflow-hidden bg-obsidian lg:hidden"
           >
-            <div className="aurora-blob pointer-events-none absolute -right-20 top-20 h-64 w-64 rounded-full [--blob:rgba(198,255,61,0.22)]" />
-            <div className="aurora-blob pointer-events-none absolute -left-16 bottom-24 h-56 w-56 rounded-full [--blob:rgba(255,106,61,0.26)]" />
+            <div className="aurora-blob pointer-events-none absolute -right-20 top-20 h-64 w-64 rounded-full [--blob:rgba(34,211,238,0.22)]" />
+            <div className="aurora-blob pointer-events-none absolute -left-16 bottom-24 h-56 w-56 rounded-full [--blob:rgba(168,85,247,0.26)]" />
             <div className="relative flex h-full flex-col px-5 pb-8 pt-24">
               <div className="flex flex-col gap-1">
                 {NAV_LINKS.map((link, i) => (
@@ -152,7 +152,7 @@ export default function Navbar() {
                       onClick={() => setOpen(false)}
                       className="flex items-baseline gap-3 rounded-xl px-4 py-3 text-2xl font-semibold tracking-tight text-zinc-100 active:bg-white/5"
                     >
-                      <span className="font-mono text-xs text-volt">0{i + 1}</span>
+                      <span className="font-mono text-xs text-cyan-electric">0{i + 1}</span>
                       {link.label}
                     </motion.a>
                   </div>

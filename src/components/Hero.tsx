@@ -49,9 +49,9 @@ export default function Hero() {
       <div className="radial-glow absolute inset-0 -z-20" />
       <div className="grid-overlay absolute inset-0 -z-10 opacity-60" />
       <ParticlesBg />
-      <div className="aurora-blob pointer-events-none absolute left-[-30%] top-16 h-64 w-64 rounded-full [--blob:rgba(198,255,61,0.22)] md:left-[-10%] md:top-24 md:h-[420px] md:w-[420px]" />
+      <div className="aurora-blob pointer-events-none absolute left-[-30%] top-16 h-64 w-64 rounded-full [--blob:rgba(34,211,238,0.22)] md:left-[-10%] md:top-24 md:h-[420px] md:w-[420px]" />
       <div
-        className="aurora-blob pointer-events-none absolute right-[-28%] top-32 h-56 w-56 rounded-full [--blob:rgba(255,106,61,0.26)] md:right-[-8%] md:top-40 md:h-[380px] md:w-[380px]"
+        className="aurora-blob pointer-events-none absolute right-[-28%] top-32 h-56 w-56 rounded-full [--blob:rgba(168,85,247,0.26)] md:right-[-8%] md:top-40 md:h-[380px] md:w-[380px]"
         style={{ animationDelay: "-6s" }}
       />
 
@@ -64,8 +64,8 @@ export default function Hero() {
             className="mb-6 inline-flex max-w-full items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-[11px] text-zinc-300 backdrop-blur sm:text-xs"
           >
             <span className="relative flex h-1.5 w-1.5">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-volt opacity-75 motion-reduce:animate-none" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-volt shadow-[0_0_12px_#c6ff3d]" />
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-electric opacity-75 motion-reduce:animate-none" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-cyan-electric shadow-[0_0_12px_#22d3ee]" />
             </span>
             Founder-led studio · {PROJECTS.length} systems shipped
           </motion.div>
@@ -117,9 +117,9 @@ export default function Hero() {
               <a
                 href="#work"
                 data-track="Hero view work"
-                className="group inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/12 bg-white/5 px-6 py-3.5 text-sm font-semibold text-zinc-100 backdrop-blur transition hover:border-volt/40 hover:bg-white/10 sm:w-auto"
+                className="group inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/12 bg-white/5 px-6 py-3.5 text-sm font-semibold text-zinc-100 backdrop-blur transition hover:border-cyan-electric/40 hover:bg-white/10 sm:w-auto"
               >
-                <Play className="h-4 w-4 fill-volt text-volt transition-transform duration-300 group-hover:scale-125" />
+                <Play className="h-4 w-4 fill-cyan-electric text-cyan-electric transition-transform duration-300 group-hover:scale-125" />
                 View Our Work
               </a>
             </Magnetic>
@@ -184,7 +184,7 @@ function HeroSculpture() {
   const springShiftY = useSpring(shiftY, { stiffness: 90, damping: 18 });
   const springGx = useSpring(glareX, { stiffness: 90, damping: 18 });
   const springGy = useSpring(glareY, { stiffness: 90, damping: 18 });
-  const glare = useMotionTemplate`radial-gradient(420px circle at ${springGx}% ${springGy}%, rgba(198,255,61,0.32), transparent 58%)`;
+  const glare = useMotionTemplate`radial-gradient(420px circle at ${springGx}% ${springGy}%, rgba(34,211,238,0.32), transparent 58%)`;
 
   const tiltTo = (clientX: number, clientY: number) => {
     const node = card.current;
@@ -229,7 +229,7 @@ function HeroSculpture() {
 
   return (
     <div className="relative mx-auto w-full max-w-md [@media(pointer:coarse)]:animate-float">
-      <div className="absolute -inset-8 rounded-[2.4rem] bg-gradient-to-br from-volt/25 via-sun/15 to-ember/30 blur-3xl" />
+      <div className="absolute -inset-8 rounded-[2.4rem] bg-gradient-to-br from-cyan-electric/25 via-indigo-glow/15 to-purple-neon/30 blur-3xl" />
       <div
         ref={card}
         onPointerEnter={(event) => {
@@ -262,9 +262,7 @@ function HeroSculpture() {
             width={1200}
             height={1600}
             priority
-            // Static filter shifts the cyan/violet artwork to ember/lime. It is
-            // rasterised once, unlike a blend layer re-composited on every tilt.
-            className="h-[120%] w-[120%] max-w-none -translate-x-[8%] -translate-y-[8%] object-cover [filter:hue-rotate(185deg)_saturate(1.15)]"
+            className="h-[120%] w-[120%] max-w-none -translate-x-[8%] -translate-y-[8%] object-cover"
           />
           <motion.div
             aria-hidden
@@ -273,8 +271,8 @@ function HeroSculpture() {
           />
         </motion.div>
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-obsidian/50 via-transparent to-obsidian/10" />
-        <div className="pointer-events-none absolute left-4 top-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-[11px] text-volt backdrop-blur">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-volt shadow-[0_0_10px_#c6ff3d]" />
+        <div className="pointer-events-none absolute left-4 top-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/40 px-3 py-1.5 text-[11px] text-cyan-electric backdrop-blur">
+          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-cyan-electric shadow-[0_0_10px_#22d3ee]" />
           Shipping now
         </div>
       </div>
@@ -296,7 +294,7 @@ function HeroSculpture() {
             className="animate-float inline-flex items-center gap-1.5 rounded-full border border-white/12 bg-[#11110f]/95 px-3 py-1.5 text-[11px] font-medium text-zinc-100 shadow-[0_10px_30px_rgba(0,0,0,0.45)]"
             style={{ animationDuration: `${chip.duration}s` }}
           >
-            <span className={`h-1.5 w-1.5 rounded-full ${i % 2 ? "bg-ember" : "bg-volt"}`} />
+            <span className={`h-1.5 w-1.5 rounded-full ${i % 2 ? "bg-purple-neon" : "bg-cyan-electric"}`} />
             {chip.label}
           </span>
         </motion.span>
@@ -343,7 +341,7 @@ function ProofBar({ ready }: { ready: boolean }) {
               hidden: { opacity: 0, y: 8 },
               show: { opacity: 1, y: 0 },
             }}
-            className="text-[13px] font-semibold tracking-wide text-zinc-500 transition-colors hover:text-volt"
+            className="text-[13px] font-semibold tracking-wide text-zinc-500 transition-colors hover:text-cyan-electric"
           >
             {name}
           </motion.span>

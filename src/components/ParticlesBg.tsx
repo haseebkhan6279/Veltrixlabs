@@ -20,9 +20,9 @@ export default function ParticlesBg() {
       pauseOnBlur: true,
       pauseOnOutsideViewport: true,
       particles: {
-        color: { value: ["#c6ff3d", "#ff6a3d", "#ffb547", "#e4e4e7"] },
+        color: { value: ["#22d3ee", "#a855f7", "#6366f1", "#e4e4e7"] },
         links: {
-          color: "#c6ff3d",
+          color: "#22d3ee",
           distance: 130,
           enable: !small,
           opacity: 0.14,
@@ -45,7 +45,7 @@ export default function ParticlesBg() {
           onHover: { enable: !small, mode: "grab" },
         },
         modes: {
-          grab: { distance: 150, links: { opacity: 0.35, color: "#ff6a3d" } },
+          grab: { distance: 150, links: { opacity: 0.35, color: "#a855f7" } },
         },
       },
     };
